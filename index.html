@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b1220" />
+  <title>KITC Digital Management System</title>
+  <link rel="stylesheet" href="src/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">K</div>
+        <div><strong>KITC</strong><span>Digital Management</span></div>
+      </div>
+      <nav class="nav" aria-label="Primary navigation">
+        <button class="nav-item active" data-section="dashboard">⌂ <span>Dashboard</span></button>
+        <button class="nav-item" data-section="members">♙ <span>Members</span></button>
+        <button class="nav-item" data-section="meetings">▣ <span>Meetings</span></button>
+        <button class="nav-item" data-section="tasks">✓ <span>Tasks</span></button>
+        <button class="nav-item" data-section="events">★ <span>Programs & Events</span></button>
+        <button class="nav-item" data-section="attendance">◷ <span>Attendance</span></button>
+        <button class="nav-item" data-section="assets">▤ <span>IT / Assets</span></button>
+        <button class="nav-item" data-section="documents">▱ <span>Documents</span></button>
+        <button class="nav-item" data-section="reports">▥ <span>Reports</span></button>
+        <button class="nav-item" data-section="handover">↗ <span>Handover Center</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <button class="nav-item" data-section="settings">⚙ <span>Settings</span></button>
+        <div class="term-card"><span>Current term</span><strong>2026–27</strong><small>Secretary • Anim</small></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="mobile-menu" id="menuButton" aria-label="Open menu">☰</button>
+        <div class="search"><span>⌕</span><input id="globalSearch" placeholder="Search members, meetings, tasks, PC-27..." /></div>
+        <div class="top-actions"><button class="icon-button">◔</button><button class="profile">A<span>Anim<br><small>Secretary</small></span></button></div>
+      </header>
+
+      <section class="content" id="content"></section>
+    </main>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script src="src/main.js"></script>
+</body>
+</html>
