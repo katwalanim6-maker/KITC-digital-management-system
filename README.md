@@ -1,79 +1,23 @@
-# KCITC Digital Management System
+# KITC Digital Management System
 
-A permanent Secretary OS for KCITC — designed to survive management terms, preserve institutional memory and make handover simple.
+Permanent digital management infrastructure for KITC.
 
-## What is included in this restart
+## Architecture
 
-- Modern responsive dashboard
-- Members and management workspace
-- Meetings and searchable meeting history
-- Tasks with status and priorities
-- Programs & Events records
-- Attendance overview
-- IT / asset inventory and issue tracking
-- Documents area
-- Announcements
-- Reports architecture
-- Secretary Handover Center
-- Global search UI
-- Mobile navigation and quick-add flows
-- GitHub Pages deployment from `main`
-- Supabase/PostgreSQL schema with Row Level Security enabled
+- Frontend: vanilla HTML/CSS/JavaScript foundation
+- Backend-ready: Supabase / PostgreSQL
+- Auth-ready: role-based access
+- Storage-ready: documents and event media
+- PWA-ready: responsive mobile-first shell
 
-## Public site
+## Modules
 
-The repository is public and the Pages build is configured for the repository path:
+Dashboard, Members, Management, Meetings, Tasks, Programs & Events, Attendance, IT/Assets, Documents, Announcements, Reports, Global Search, Handover Center, Settings.
 
-`https://katwalanim6-maker.github.io/KITC-digital-management-system/`
+## Core principle
 
-GitHub Pages must use **GitHub Actions** as its source. The workflow in `.github/workflows/deploy-pages.yml` builds and deploys on every push to `main`.
-
-## Important architecture decision
-
-The current public build intentionally uses demo records in React state. It does **not** pretend that browser state is the permanent database.
-
-The permanent backend is prepared around:
-
-- Supabase Auth for accounts
-- PostgreSQL for connected records
-- Supabase Storage for documents/photos
-- Row Level Security for role-based access
-- Activity logs for accountability
-
-Run `supabase/schema.sql` in the Supabase SQL editor when the project is created, then add the project's URL and anon key as GitHub Actions repository secrets/environment variables before wiring the frontend to live data.
-
-## Roles planned
-
-- President — overview and approvals
-- Secretary — full administrative access
-- Vice-President — management, tasks and events
-- Management — relevant records
-- Member — limited access
-- Advisor — oversight/report access
-- Admin — system administration
+KITC owns the system. Secretaries and management terms are records that change over time; historical records are preserved.
 
 ## Development
 
-```bash
-npm install
-npm run dev
-```
-
-Build locally with:
-
-```bash
-npm run build
-```
-
-## Next backend phase
-
-1. Create the Supabase project.
-2. Run `supabase/schema.sql`.
-3. Add authentication and profiles.
-4. Add role-aware RLS policies.
-5. Replace demo state with Supabase queries/mutations.
-6. Add Storage buckets for documents and event media.
-7. Add PDF/CSV/XLSX export.
-8. Add term transition automation and full audit history.
-
-The core principle is: **KCITC owns the system; the current Secretary is only the current role.**
+Open `index.html` directly for the static shell, or serve the repository with any static web server. Backend integration will be added after the data model and UI flows are finalized.
