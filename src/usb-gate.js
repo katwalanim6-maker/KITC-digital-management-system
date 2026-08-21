@@ -1,9 +1,6 @@
 (() => {
-  const PASSWORD_KEY = 'kitc-password-verifier-v1';
-  const APP_KEY = 'kitc-access-granted';
-  const REQUIRED_FOLDER = 'KITC-SECRETARY';
+  const LEGACY_PASSWORD_KEY = 'kitc-password-verifier-v1';
   const MANIFEST = 'KITC-MANIFEST.json';
-
   const gate = document.getElementById('kitcGate');
   const app = document.querySelector('.app-shell');
   const status = document.getElementById('kitcGateStatus');
@@ -13,7 +10,7 @@
   const setupHint = document.getElementById('kitcSetupHint');
 
   let usbHandle = null;
-  let firstRun = !localStorage.getItem(PASSWORD_KEY);
+  let manifest = null;
 
   const hash = async value => {
     const bytes = new TextEncoder().encode(value);
@@ -26,54 +23,73 @@
     status.dataset.good = good ? 'true' : 'false';
   };
 
+  const folderPaths = ['database','documents','documents/meetings','documents/events','documents/reports','documents/certificates','documents/notices','assets','backups'];
+
+  async function readManifest(handle) {
+    try {
+      const file = await handle.getFileHandle(MANIFEST);
+      return JSON.parse(await (await file.getFile()).text());
+    } catch {
+      return null;
+    }
+  }
+
+  async function writeManifest(handle, value) {
+    const file = await handle.getFileHandle(MANIFEST, {create:true});
+    const writable = await file.createWritable();
+    try { await writable.write(JSON.stringify(value, null, 2)); }
+    finally { await writable.close(); }
+  }
+
+  async function ensureStructure(handle) {
+    for (const path of folderPaths) {
+      let current = handle;
+      for (const part of path.split('/')) current = await current.getDirectoryHandle(part, {create:true});
+    }
+  }
+
   const showApp = () => {
     gate.hidden = true;
     app.hidden = false;
-    localStorage.setItem(APP_KEY, '1');
     window.kitcUsbHandle = usbHandle;
-    window.dispatchEvent(new CustomEvent('kitc:usb-ready', { detail: { handle: usbHandle } }));
-  };
-
-  const ensureKitcFolder = async handle => {
-    // The selected directory itself becomes the KITC-SECRETARY root.
-    await handle.getFileHandle(MANIFEST, { create: true });
-    const manifestHandle = await handle.getFileHandle(MANIFEST, { create: true });
-    const writable = await manifestHandle.createWritable();
-    await writable.write(JSON.stringify({
-      system: 'KITC Digital Management System',
-      format: 1,
-      created: new Date().toISOString(),
-      folders: ['database', 'documents', 'documents/meetings', 'documents/events', 'documents/reports', 'documents/certificates', 'documents/notices', 'assets', 'backups']
-    }, null, 2));
-    await writable.close();
-
-    for (const path of ['database', 'documents', 'documents/meetings', 'documents/events', 'documents/reports', 'documents/certificates', 'documents/notices', 'assets', 'backups']) {
-      const parts = path.split('/');
-      let current = handle;
-      for (const part of parts) current = await current.getDirectoryHandle(part, { create: true });
-    }
+    window.dispatchEvent(new CustomEvent('kitc:usb-ready', {detail:{handle:usbHandle}}));
   };
 
   const connectUsb = async () => {
     if (!window.showDirectoryPicker) {
-      setStatus('USB folder access is not supported in this browser. Open the site in a browser that supports folder access.');
+      setStatus('USB folder access is not supported in this browser. Use a Chromium-based browser with folder access.');
       return;
     }
     try {
-      setStatus('Choose the KITC-SECRETARY folder on your USB…');
-      const handle = await window.showDirectoryPicker({ mode: 'readwrite' });
-      await handle.requestPermission({ mode: 'readwrite' });
+      setStatus('Choose your KITC-SECRETARY folder on the USB…');
+      const handle = await window.showDirectoryPicker({mode:'readwrite'});
+      const permission = await handle.requestPermission({mode:'readwrite'});
+      if (permission !== 'granted') throw new Error('USB write permission was not granted.');
+
+      const existing = await readManifest(handle);
+      if (existing && existing.system !== 'KITC Digital Management System') {
+        throw new Error('This folder is not a KITC Secretary USB.');
+      }
+
       usbHandle = handle;
-      await ensureKitcFolder(handle);
-      setStatus('KITC USB connected and verified.', true);
+      manifest = existing || {
+        system: 'KITC Digital Management System',
+        format: 2,
+        usbId: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+        created: new Date().toISOString(),
+        folders: folderPaths
+      };
+      await ensureStructure(handle);
+      if (!existing) await writeManifest(handle, manifest);
+
       connectButton.textContent = '✓ USB Connected';
       connectButton.dataset.connected = 'true';
+      setStatus(manifest.passwordVerifier ? 'KITC USB verified. Enter the Secretary password.' : 'New KITC USB detected. Enter a password to protect it.', true);
     } catch (error) {
-      if (error?.name === 'AbortError') {
-        setStatus('USB selection cancelled.');
-        return;
-      }
+      if (error?.name === 'AbortError') return setStatus('USB selection cancelled.');
       console.error(error);
+      usbHandle = null;
+      manifest = null;
       setStatus(`USB error: ${error.message || 'Unable to access the selected folder.'}`);
     }
   };
@@ -81,19 +97,29 @@
   const unlock = async () => {
     const value = password.value;
     if (!value) return setStatus('Enter your Secretary password.');
-    if (!usbHandle) return setStatus('Connect the KITC USB first.');
+    if (!usbHandle || !manifest) return setStatus('Connect the KITC USB first.');
 
     const verifier = await hash(value);
-    if (firstRun) {
-      localStorage.setItem(PASSWORD_KEY, verifier);
-      firstRun = false;
-      setupHint.textContent = 'Password created for this browser. Your USB remains required to open KITC.';
-      setStatus('Password created. KITC unlocked.', true);
+
+    // Migrate the earlier browser-only password once, if it exists.
+    if (!manifest.passwordVerifier) {
+      const legacy = localStorage.getItem(LEGACY_PASSWORD_KEY);
+      if (legacy && legacy !== verifier) {
+        setStatus('Incorrect password.');
+        password.value = '';
+        return;
+      }
+      manifest.passwordVerifier = verifier;
+      manifest.passwordUpdated = new Date().toISOString();
+      await writeManifest(usbHandle, manifest);
+      localStorage.removeItem(LEGACY_PASSWORD_KEY);
+      setupHint.textContent = 'Password is now stored with the KITC USB. Keep the USB secure.';
+      setStatus('Password saved to KITC USB. KITC unlocked.', true);
       showApp();
       return;
     }
 
-    if (verifier !== localStorage.getItem(PASSWORD_KEY)) {
+    if (verifier !== manifest.passwordVerifier) {
       setStatus('Incorrect password.');
       password.value = '';
       return;
@@ -105,13 +131,8 @@
 
   connectButton.addEventListener('click', connectUsb);
   unlockButton.addEventListener('click', unlock);
-  password.addEventListener('keydown', event => {
-    if (event.key === 'Enter') unlock();
-  });
-
+  password.addEventListener('keydown', event => { if (event.key === 'Enter') unlock(); });
   app.hidden = true;
   gate.hidden = false;
-  setupHint.textContent = firstRun
-    ? 'First use: connect your KITC USB, then choose a Secretary password for this browser.'
-    : 'Connect the registered KITC USB and enter your Secretary password.';
+  setupHint.textContent = 'Connect the KITC USB first. Your password will be protected by the USB manifest.';
 })();
