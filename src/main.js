@@ -38,12 +38,8 @@ supabaseClient
   .select('id')
   .limit(1)
   .then(({ data, error }) => {
-    if (error) {
-      console.error('Supabase connection test failed:', error);
-      notify('Supabase connection failed');
-      return;
-    }
-
-    console.log('Supabase connected successfully:', data);
-    notify('Supabase connected ✅');
-  });
+if (error) {
+  console.error('Supabase connection test failed:', error);
+  notify(`Supabase error: ${error.message}`);
+  return;
+}
