@@ -44,10 +44,11 @@
       display.textContent = lowGlow ? '◑' : '◔';
     });
 
+    // main.js performs the actual toggle; this listener only keeps ARIA state in sync.
     menuButton?.addEventListener('click', () => {
       const open = sidebar?.classList.contains('open');
-      menuButton.setAttribute('aria-expanded', String(!open));
-      menuButton.setAttribute('aria-label', open ? 'Open menu' : 'Close menu');
+      menuButton.setAttribute('aria-expanded', String(Boolean(open)));
+      menuButton.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     });
 
     document.addEventListener('click', event => {
