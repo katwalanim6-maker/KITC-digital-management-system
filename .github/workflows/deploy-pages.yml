@@ -24,6 +24,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Validate static site
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          html = Path("index.html").read_text(encoding="utf-8")
+          refs = re.findall(r'(?:src|href)=["\']([^"\']+)["\']', html)
+          local_refs = [r.split("?", 1)[0] for r in refs if not r.startswith(("http://", "https://", "#"))]
+          missing = [r for r in local_refs if not Path(r).exists()]
+          if missing:
+              raise SystemExit("Missing local assets: " + ", ".join(missing))
+          if "src/secretary-editorial.css" in html:
+              raise SystemExit("Legacy secretary-editorial.css is still referenced")
+          required = ["src/styles.css", "src/usb-gate.css", "src/kitc-theme.css"]
+          missing_required = [r for r in required if not Path(r).exists()]
+          if missing_required:
+              raise SystemExit("Missing required stylesheet(s): " + ", ".join(missing_required))
+          print("KITC static-site validation passed.")
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
