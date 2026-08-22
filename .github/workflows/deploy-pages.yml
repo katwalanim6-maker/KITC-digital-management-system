@@ -54,6 +54,7 @@ jobs:
               "src/documents.js",
               "src/members.js",
               "src/polish.js",
+              "src/dashboard-polish.js",
               "src/runtime.js",
               "src/supabase-client.js",
               "supabase/schema.sql",
