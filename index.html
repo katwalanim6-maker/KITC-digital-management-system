@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#080a19" />
   <meta name="color-scheme" content="dark" />
-  <meta name="kitc-build" content="20260822-polished-v3" />
+  <meta name="kitc-build" content="20260822-production-v1" />
   <title>KITC Secretary Desk</title>
 
   <style>
@@ -14,9 +14,10 @@
     #kitcApp { min-height: 100vh; background: #080a19 !important; color: #fff !important; }
   </style>
 
-  <link rel="stylesheet" href="src/styles.css?v=20260822-8" />
-  <link rel="stylesheet" href="src/usb-gate.css?v=20260822-8" />
-  <link rel="stylesheet" href="src/kitc-theme.css?v=20260822-8" />
+  <link rel="stylesheet" href="src/styles.css?v=20260822-10" />
+  <link rel="stylesheet" href="src/usb-gate.css?v=20260822-10" />
+  <link rel="stylesheet" href="src/kitc-theme.css?v=20260822-10" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
   <section class="kitc-gate" id="kitcGate">
@@ -78,17 +79,25 @@
         </div>
       </header>
 
-      <section class="content" id="content"></section>
+      <section class="content" id="content">
+        <div class="kitc-loading" data-kitc-loading>
+          <div class="kitc-loading-orb"></div>
+          <div><strong>Loading KITC Secretary Desk</strong><span>Preparing your private workspace…</span></div>
+        </div>
+      </section>
     </main>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="src/kitc-bootstrap.js?v=20260822-8"></script>
-  <script src="src/main.js?v=20260822-8"></script>
-  <script src="src/usb-gate.js?v=20260822-8"></script>
-  <script src="src/documents.js?v=20260822-8"></script>
-  <script src="src/members.js?v=20260822-8"></script>
-  <script src="src/polish.js?v=20260822-8"></script>
+  <script src="src/kitc-bootstrap.js?v=20260822-10"></script>
+  <script src="src/main.js?v=20260822-10"></script>
+  <script src="src/secretary-suite.js?v=20260822-10" data-kitc-secretary-suite="true"></script>
+  <script src="src/usb-gate.js?v=20260822-10"></script>
+  <script src="src/documents.js?v=20260822-10"></script>
+  <script src="src/members.js?v=20260822-10"></script>
+  <script src="src/supabase-client.js?v=20260822-10"></script>
+  <script src="src/polish.js?v=20260822-10"></script>
+  <script src="src/runtime.js?v=20260822-10"></script>
 </body>
 </html>
