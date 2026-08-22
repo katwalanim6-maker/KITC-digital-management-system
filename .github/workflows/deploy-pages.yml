@@ -36,12 +36,34 @@ jobs:
           missing = [r for r in local_refs if not Path(r).exists()]
           if missing:
               raise SystemExit("Missing local assets: " + ", ".join(missing))
-          if "src/secretary-editorial.css" in html:
-              raise SystemExit("Legacy secretary-editorial.css is still referenced")
-          required = ["src/styles.css", "src/usb-gate.css", "src/kitc-theme.css"]
+
+          forbidden = ["src/secretary-editorial.css", "src/module-fix.js"]
+          stale = [r for r in forbidden if r in html]
+          if stale:
+              raise SystemExit("Obsolete asset still referenced: " + ", ".join(stale))
+
+          required = [
+              "index.html",
+              "src/styles.css",
+              "src/usb-gate.css",
+              "src/kitc-theme.css",
+              "src/kitc-bootstrap.js",
+              "src/main.js",
+              "src/usb-gate.js",
+              "src/documents.js",
+              "src/members.js",
+              "src/polish.js",
+              "src/secretary-suite.js",
+              "supabase/schema.sql",
+          ]
           missing_required = [r for r in required if not Path(r).exists()]
           if missing_required:
-              raise SystemExit("Missing required stylesheet(s): " + ", ".join(missing_required))
+              raise SystemExit("Missing required project file(s): " + ", ".join(missing_required))
+
+          bootstrap = Path("src/kitc-bootstrap.js").read_text(encoding="utf-8")
+          if "src/secretary-suite.js?v=" not in bootstrap:
+              raise SystemExit("Secretary suite dynamic loader is missing its cache-busted source")
+
           print("KITC static-site validation passed.")
 
       - name: Setup Pages
