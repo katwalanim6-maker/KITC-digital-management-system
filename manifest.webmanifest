@@ -1,0 +1,16 @@
+{
+  "name": "KITC Secretary Desk",
+  "short_name": "KITC",
+  "description": "KITC digital management system for the Secretary.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#080a19",
+  "theme_color": "#080a19",
+  "icons": [
+    {
+      "src": "Screenshot_20260821-202536.png",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ]
+}
