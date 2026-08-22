@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Validate static site
         shell: python
@@ -37,7 +37,7 @@ jobs:
           if missing:
               raise SystemExit("Missing local assets: " + ", ".join(missing))
 
-          forbidden = ["src/secretary-editorial.css", "src/module-fix.js"]
+          forbidden = ["src/secretary-editorial.css", "src/module-fix.js", "src/usb-bridge.js", "src/usb-data-sync.js", "src/usb-storage.js", "src/record-tools.js"]
           stale = [r for r in forbidden if r in html]
           if stale:
               raise SystemExit("Obsolete asset still referenced: " + ", ".join(stale))
@@ -49,28 +49,40 @@ jobs:
               "src/kitc-theme.css",
               "src/kitc-bootstrap.js",
               "src/main.js",
+              "src/secretary-suite.js",
               "src/usb-gate.js",
               "src/documents.js",
               "src/members.js",
               "src/polish.js",
-              "src/secretary-suite.js",
+              "src/runtime.js",
+              "src/supabase-client.js",
               "supabase/schema.sql",
           ]
           missing_required = [r for r in required if not Path(r).exists()]
           if missing_required:
               raise SystemExit("Missing required project file(s): " + ", ".join(missing_required))
 
-          bootstrap = Path("src/kitc-bootstrap.js").read_text(encoding="utf-8")
-          if "src/secretary-suite.js?v=" not in bootstrap:
-              raise SystemExit("Secretary suite dynamic loader is missing its cache-busted source")
+          if 'src/secretary-suite.js' not in html:
+              raise SystemExit("Secretary suite must be loaded by index.html")
+          if 'data-kitc-secretary-suite="true"' not in html:
+              raise SystemExit("Secretary suite marker is missing")
 
           print("KITC static-site validation passed.")
+
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in src/*.js; do
+            echo "Checking $file"
+            node --check "$file"
+          done
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Upload site artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: .
 
