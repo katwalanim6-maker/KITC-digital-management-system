@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#080a19" />
   <meta name="color-scheme" content="dark" />
-  <meta name="kitc-build" content="20260822-debug-v2" />
+  <meta name="kitc-build" content="20260822-polished-v1" />
   <title>KITC Secretary Desk</title>
 
   <style>
@@ -14,9 +14,9 @@
     #kitcApp { min-height: 100vh; background: #080a19 !important; color: #fff !important; }
   </style>
 
-  <link rel="stylesheet" href="src/styles.css?v=20260822-5" />
-  <link rel="stylesheet" href="src/usb-gate.css?v=20260822-5" />
-  <link rel="stylesheet" href="src/kitc-theme.css?v=20260822-5" />
+  <link rel="stylesheet" href="src/styles.css?v=20260822-6" />
+  <link rel="stylesheet" href="src/usb-gate.css?v=20260822-6" />
+  <link rel="stylesheet" href="src/kitc-theme.css?v=20260822-6" />
 </head>
 <body>
   <section class="kitc-gate" id="kitcGate">
@@ -73,8 +73,8 @@
           <input id="globalSearch" type="search" placeholder="Search your KITC records..." autocomplete="off" />
         </div>
         <div class="top-actions">
-          <button class="icon-button" type="button" aria-label="Theme options">◔</button>
-          <button class="profile" type="button" aria-label="Secretary profile">A<span>Anim<br /><small>Secretary</small></span></button>
+          <button class="icon-button" id="displayButton" type="button" aria-label="Toggle ambient display" aria-pressed="false">◔</button>
+          <button class="profile" id="profileButton" type="button" aria-label="Open Secretary profile" aria-expanded="false">A<span>Anim<br /><small>Secretary</small></span></button>
         </div>
       </header>
 
@@ -84,11 +84,10 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="src/kitc-bootstrap.js?v=20260822-5"></script>
-  <script src="src/main.js?v=20260822-5"></script>
-  <script src="src/usb-gate.js?v=20260822-5"></script>
-  <script src="src/module-fix.js?v=20260822-5"></script>
-  <script src="src/documents.js?v=20260822-5"></script>
-  <script src="src/members.js?v=20260822-5"></script>
+  <script src="src/kitc-bootstrap.js?v=20260822-6"></script>
+  <script src="src/main.js?v=20260822-6"></script>
+  <script src="src/usb-gate.js?v=20260822-6"></script>
+  <script src="src/documents.js?v=20260822-6"></script>
+  <script src="src/members.js?v=20260822-6"></script>
 </body>
 </html>
