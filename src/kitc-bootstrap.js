@@ -15,7 +15,7 @@
   const loadSecretarySuite = () => {
     if (document.querySelector('script[data-kitc-secretary-suite]')) return;
     const s = document.createElement('script');
-    s.src = 'src/secretary-suite.js?v=20260822-7';
+    s.src = 'src/secretary-suite.js?v=20260822-8';
     s.dataset.kitcSecretarySuite = 'true';
     s.onload = () => window.dispatchEvent(new Event('kitc:secretary-suite-ready'));
     s.onerror = () => console.error('KITC Secretary suite failed to load.');
