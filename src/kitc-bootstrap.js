@@ -11,12 +11,19 @@
   }
   window.kitcData = state;
   window.KITC_BOOTSTRAPPED = true;
-  window.addEventListener('DOMContentLoaded', () => {
+
+  // The Secretary suite is part of the unlocked application, not the lock screen.
+  // Loading it only after the gate succeeds keeps the security boundary independent
+  // from dashboard rendering and prevents frontend modules from competing with the gate.
+  const loadSecretarySuite = () => {
     if (document.querySelector('script[data-kitc-secretary-suite]')) return;
     const s = document.createElement('script');
-    s.src = 'src/secretary-suite.js?v=2';
-    s.defer = true;
+    s.src = 'src/secretary-suite.js?v=3';
     s.dataset.kitcSecretarySuite = 'true';
+    s.onload = () => window.dispatchEvent(new Event('kitc:secretary-suite-ready'));
+    s.onerror = () => console.error('KITC Secretary suite failed to load.');
     document.body.appendChild(s);
-  }, { once: true });
+  };
+
+  window.addEventListener('kitc:unlocked', loadSecretarySuite, { once: true });
 })();
