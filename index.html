@@ -5,13 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#080a19" />
   <meta name="color-scheme" content="dark" />
-  <meta name="kitc-build" content="20260822-functional-v2" />
+  <meta name="kitc-build" content="20260822-brand-v1" />
   <title>KITC Secretary Desk</title>
 
   <style>
     html, body { margin: 0; min-height: 100%; background: #080a19 !important; color: #fff !important; }
     body { overflow-x: hidden; }
     #kitcApp { min-height: 100vh; background: #080a19 !important; color: #fff !important; }
+    .kitc-logo { display:block; width:100%; height:100%; object-fit:contain; }
+    .kitc-gate-logo { width:88px; height:88px; margin:0 auto 18px; border-radius:20px; object-fit:contain; }
+    .brand-logo { width:42px; height:42px; border-radius:12px; object-fit:contain; background:rgba(255,255,255,.96); padding:4px; }
+    .mobile-logo { width:32px; height:32px; border-radius:9px; object-fit:contain; background:rgba(255,255,255,.96); padding:3px; }
   </style>
 
   <link rel="stylesheet" href="src/styles.css?v=20260822-12" />
@@ -22,7 +26,7 @@
 <body>
   <section class="kitc-gate" id="kitcGate">
     <div class="kitc-gate-card">
-      <div class="kitc-gate-mark">K</div>
+      <img class="kitc-gate-logo" src="Screenshot_20260821-202536.png" alt="KITC logo" />
       <div class="eyebrow">KITC • SECRETARY ACCESS</div>
       <h1>Unlock KITC</h1>
       <p>Connect the KITC Secretary USB and enter the Secretary password to open the management system.</p>
@@ -40,7 +44,7 @@
   <div class="app-shell" id="kitcApp" hidden>
     <aside class="sidebar" id="sidebar">
       <div class="brand">
-        <div class="brand-mark">K</div>
+        <img class="brand-logo" src="Screenshot_20260821-202536.png" alt="KITC" />
         <div><strong>KITC</strong><span>Secretary Desk</span></div>
       </div>
 
@@ -69,6 +73,7 @@
     <main class="main">
       <header class="topbar">
         <button class="mobile-menu" id="menuButton" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
+        <img class="mobile-logo" src="Screenshot_20260821-202536.png" alt="KITC" />
         <div class="search">
           <span aria-hidden="true">⌕</span>
           <input id="globalSearch" type="search" placeholder="Search your KITC records..." autocomplete="off" />
