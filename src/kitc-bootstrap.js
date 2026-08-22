@@ -12,13 +12,10 @@
   window.kitcData = state;
   window.KITC_BOOTSTRAPPED = true;
 
-  // The Secretary suite is part of the unlocked application, not the lock screen.
-  // Loading it only after the gate succeeds keeps the security boundary independent
-  // from dashboard rendering and prevents frontend modules from competing with the gate.
   const loadSecretarySuite = () => {
     if (document.querySelector('script[data-kitc-secretary-suite]')) return;
     const s = document.createElement('script');
-    s.src = 'src/secretary-suite.js?v=20260822-4';
+    s.src = 'src/secretary-suite.js?v=20260822-5';
     s.dataset.kitcSecretarySuite = 'true';
     s.onload = () => window.dispatchEvent(new Event('kitc:secretary-suite-ready'));
     s.onerror = () => console.error('KITC Secretary suite failed to load.');
