@@ -10,7 +10,6 @@
   <link rel="apple-touch-icon" href="Screenshot_20260821-202536.png" />
   <link rel="manifest" href="manifest.webmanifest" />
   <title>KITC Secretary Desk</title>
-
   <style>
     html, body { margin: 0; min-height: 100%; background: #080a19 !important; color: #fff !important; }
     body { overflow-x: hidden; }
@@ -20,7 +19,6 @@
     .brand-logo { width:42px; height:42px; border-radius:12px; object-fit:contain; background:rgba(255,255,255,.96); padding:4px; }
     .mobile-logo { width:32px; height:32px; border-radius:9px; object-fit:contain; background:rgba(255,255,255,.96); padding:3px; }
   </style>
-
   <link rel="stylesheet" href="src/styles.css?v=20260822-12" />
   <link rel="stylesheet" href="src/usb-gate.css?v=20260822-12" />
   <link rel="stylesheet" href="src/kitc-theme.css?v=20260822-12" />
@@ -43,14 +41,9 @@
       <p class="kitc-gate-hint" id="kitcSetupHint"></p>
     </div>
   </section>
-
   <div class="app-shell" id="kitcApp" hidden>
     <aside class="sidebar" id="sidebar">
-      <div class="brand">
-        <img class="brand-logo" src="Screenshot_20260821-202536.png" alt="KITC" />
-        <div><strong>KITC</strong><span>Secretary Desk</span></div>
-      </div>
-
+      <div class="brand"><img class="brand-logo" src="Screenshot_20260821-202536.png" alt="KITC" /><div><strong>KITC</strong><span>Secretary Desk</span></div></div>
       <nav class="nav" aria-label="Primary navigation">
         <button class="nav-item active" data-section="dashboard" type="button">⌂ <span>Overview</span></button>
         <button class="nav-item" data-section="members" type="button">♙ <span>Members</span></button>
@@ -62,42 +55,14 @@
         <button class="nav-item" data-section="reports" type="button">▥ <span>Reports</span></button>
         <button class="nav-item" data-section="handover" type="button">↗ <span>Handover</span></button>
       </nav>
-
-      <div class="sidebar-bottom">
-        <button class="nav-item" data-section="settings" type="button">⚙ <span>Settings</span></button>
-        <div class="term-card">
-          <span>Current term</span>
-          <strong>2026–27</strong>
-          <small>Secretary • Anim</small>
-        </div>
-      </div>
+      <div class="sidebar-bottom"><button class="nav-item" data-section="settings" type="button">⚙ <span>Settings</span></button><div class="term-card"><span>Current term</span><strong>2026–27</strong><small>Secretary • Anim</small></div></div>
     </aside>
-
     <main class="main">
-      <header class="topbar">
-        <button class="mobile-menu" id="menuButton" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
-        <img class="mobile-logo" src="Screenshot_20260821-202536.png" alt="KITC" />
-        <div class="search">
-          <span aria-hidden="true">⌕</span>
-          <input id="globalSearch" type="search" placeholder="Search your KITC records..." autocomplete="off" />
-        </div>
-        <div class="top-actions">
-          <button class="icon-button" id="displayButton" type="button" aria-label="Toggle ambient display" aria-pressed="false">◔</button>
-          <button class="profile" id="profileButton" type="button" aria-label="Open Secretary profile" aria-expanded="false">A<span>Anim<br /><small>Secretary</small></span></button>
-        </div>
-      </header>
-
-      <section class="content" id="content">
-        <div class="kitc-loading" data-kitc-loading>
-          <div class="kitc-loading-orb"></div>
-          <div><strong>Loading KITC Secretary Desk</strong><span>Preparing your private workspace…</span></div>
-        </div>
-      </section>
+      <header class="topbar"><button class="mobile-menu" id="menuButton" type="button" aria-label="Open menu" aria-expanded="false">☰</button><img class="mobile-logo" src="Screenshot_20260821-202536.png" alt="KITC" /><div class="search"><span aria-hidden="true">⌕</span><input id="globalSearch" type="search" placeholder="Search your KITC records..." autocomplete="off" /></div><div class="top-actions"><button class="icon-button" id="displayButton" type="button" aria-label="Toggle ambient display" aria-pressed="false">◔</button><button class="profile" id="profileButton" type="button" aria-label="Open Secretary profile" aria-expanded="false">A<span>Anim<br /><small>Secretary</small></span></button></div></header>
+      <section class="content" id="content"><div class="kitc-loading" data-kitc-loading><div class="kitc-loading-orb"></div><div><strong>Loading KITC Secretary Desk</strong><span>Preparing your private workspace…</span></div></div></section>
     </main>
   </div>
-
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
   <script src="src/kitc-bootstrap.js?v=20260822-12"></script>
   <script src="src/main.js?v=20260822-12"></script>
   <script src="src/secretary-suite.js?v=20260822-12" data-kitc-secretary-suite="true"></script>
@@ -105,6 +70,7 @@
   <script src="src/usb-gate.js?v=20260822-12"></script>
   <script src="src/documents.js?v=20260822-12"></script>
   <script src="src/members.js?v=20260822-12"></script>
+  <script src="src/member-profile.js?v=20260823-01"></script>
   <script src="src/supabase-client.js?v=20260822-12"></script>
   <script src="src/polish.js?v=20260822-12"></script>
   <script src="src/dashboard-polish.js?v=20260822-12"></script>
