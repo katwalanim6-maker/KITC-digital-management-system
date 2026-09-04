@@ -1,4 +1,4 @@
-name: Deploy KITC Digital Management System to GitHub Pages
+name: Deploy KITC Attendance Admin to GitHub Pages
 
 on:
   push:
@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -22,62 +22,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
-      - name: Validate static site
-        shell: python
-        run: |
-          from pathlib import Path
-          import re
-
-          html = Path("index.html").read_text(encoding="utf-8")
-          refs = re.findall(r'(?:src|href)=["\']([^"\']+)["\']', html)
-          local_refs = [r.split("?", 1)[0] for r in refs if not r.startswith(("http://", "https://", "#"))]
-          missing = [r for r in local_refs if not Path(r).exists()]
-          if missing:
-              raise SystemExit("Missing local assets: " + ", ".join(missing))
-
-          forbidden = ["src/secretary-editorial.css", "src/module-fix.js", "src/usb-bridge.js", "src/usb-data-sync.js", "src/usb-storage.js", "src/record-tools.js"]
-          stale = [r for r in forbidden if r in html]
-          if stale:
-              raise SystemExit("Obsolete asset still referenced: " + ", ".join(stale))
-
-          required = [
-              "index.html",
-              "src/styles.css",
-              "src/usb-gate.css",
-              "src/kitc-theme.css",
-              "src/kitc-bootstrap.js",
-              "src/main.js",
-              "src/secretary-suite.js",
-              "src/usb-gate.js",
-              "src/documents.js",
-              "src/members.js",
-              "src/polish.js",
-              "src/dashboard-polish.js",
-              "src/runtime.js",
-              "src/supabase-client.js",
-              "supabase/schema.sql",
-          ]
-          missing_required = [r for r in required if not Path(r).exists()]
-          if missing_required:
-              raise SystemExit("Missing required project file(s): " + ", ".join(missing_required))
-
-          if 'src/secretary-suite.js' not in html:
-              raise SystemExit("Secretary suite must be loaded by index.html")
-          if 'data-kitc-secretary-suite="true"' not in html:
-              raise SystemExit("Secretary suite marker is missing")
-
-          print("KITC static-site validation passed.")
-
-      - name: Check JavaScript syntax
+      - name: Validate attendance app
         shell: bash
         run: |
           set -euo pipefail
-          for file in src/*.js; do
-            echo "Checking $file"
-            node --check "$file"
-          done
+          test -f index.html
+          test -f src/attendance-admin.css
+          test -f src/attendance-admin.js
+          test -f src/attendance-invite.js
+          test -f src/attendance-enhancements.js
+          test -f src/attendance-report-fix.js
+          node --check src/attendance-admin.js
+          node --check src/attendance-invite.js
+          node --check src/attendance-enhancements.js
+          node --check src/attendance-report-fix.js
+          grep -q 'src/attendance-admin.js' index.html
+          grep -q 'src/attendance-admin.css' index.html
+          echo 'Attendance app validation passed.'
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
