@@ -9,32 +9,22 @@
   if (selector || roleNotice || adminAction || roleButtons.length) {
     if (!selector || !roleNotice || !adminAction || !roleButtons.length) return;
     const copy = {
-      member: 'Member login is not connected yet. The current repository has no member authentication provider configured.',
-      executive: 'Executive login is not connected yet. The current repository has no executive authentication provider configured.',
-      admin: 'Admin access continues to the existing KITC Secretary USB + password authentication boundary.'
+      member: 'Member access uses the KITC Supabase authentication workspace.',
+      executive: 'Executive authentication is not connected yet.',
+      admin: 'Admin access continues to the existing KITC Secretary authentication boundary.'
     };
     let selected = null;
     function choose(role) {
       selected = role;
       roleButtons.forEach(button => button.classList.toggle('selected', button.dataset.loginRole === role));
-      roleNotice.textContent = copy[role]; roleNotice.hidden = false; adminAction.hidden = role !== 'admin';
+      roleNotice.textContent = copy[role];
+      roleNotice.hidden = false;
+      adminAction.hidden = role !== 'admin';
+      if (role === 'member') window.location.href = 'member.html';
     }
     roleButtons.forEach(button => button.addEventListener('click', () => choose(button.dataset.loginRole)));
     const hashRole = location.hash.replace('#', '').toLowerCase();
     if (['member', 'executive', 'admin'].includes(hashRole)) choose(hashRole);
     window.kitcLoginRole = () => selected;
-  }
-
-  const toggle = document.getElementById('kitcPasswordToggle');
-  const password = document.getElementById('kitcPassword');
-  if (toggle && password) {
-    toggle.addEventListener('click', () => {
-      const visible = password.type === 'text';
-      password.type = visible ? 'password' : 'text';
-      toggle.textContent = visible ? 'Show' : 'Hide';
-      toggle.setAttribute('aria-label', visible ? 'Show password' : 'Hide password');
-      toggle.setAttribute('aria-pressed', String(!visible));
-      password.focus();
-    });
   }
 })();
