@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>KITC Admin Panel</title>
+  <link rel="icon" href="favicon.svg">
+  <style>
+    :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#101828;background:#f5f7fb}
+    *{box-sizing:border-box}body{margin:0;background:#f5f7fb}
+    #kitcAdminPanel{min-height:100vh;padding:12px}
+    #kitcAdminPanel .kitc-admin-close{position:fixed;right:22px;top:18px;z-index:10001;border:1px solid #d0d5dd;border-radius:8px;padding:9px 13px;background:#fff;color:#344054;font-weight:800;cursor:pointer;box-shadow:0 5px 20px rgba(16,24,40,.08)}
+    #kitcAdminPanel universal-admin-panel{display:block;min-height:calc(100vh - 24px)}
+  </style>
+</head>
+<body>
+  <main id="kitcAdminPanel"></main>
+  <script src="https://katwalanim6-maker.github.io/Admin/universal-admin-panel.js"></script>
+  <script src="src/kitc-admin-panel.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded',()=>window.openKitcAdmin?.());
+  </script>
+</body>
+</html>
