@@ -70,6 +70,13 @@ Before modifying this repository:
 
 ## Changelog
 
+### 2026-09-05 — Repair Admin unlock interaction
+- Hardened the Admin USB/password unlock state so the button tracks an explicit connected-USB state instead of relying only on DOM state.
+- Improved password verification feedback, focus behavior and error reporting so failed unlocks are visible instead of appearing unresponsive.
+- Switched cryptography and UUID calls to the explicit `window.crypto` APIs for better browser compatibility.
+- Added the password visibility toggle directly to the USB gate logic so the control works independently of the public role-selector script.
+- Preserved the existing USB manifest, SHA-256 password verifier and protected workspace boundary.
+
 ### 2026-09-05 — Polish Admin Login experience
 - Reworked the protected Admin Login into a responsive desktop/mobile two-panel experience with KITC branding, security context and a clear USB → password → workspace progression.
 - Added a direct return link to the workspace selection screen and kept Member / Executive authentication unchanged.
