@@ -1,23 +1,48 @@
 # KITC Digital Management System
 
-Permanent digital management infrastructure for KITC.
+KITC Secretary Hub with a browser-based Secretary Desk and USB-backed institutional records.
 
-## Architecture
+## Current architecture
 
-- Frontend: vanilla HTML/CSS/JavaScript foundation
-- Backend-ready: Supabase / PostgreSQL
-- Auth-ready: role-based access
-- Storage-ready: documents and event media
-- PWA-ready: responsive mobile-first shell
+- `secretary-desk.html` is the Secretary workspace.
+- `src/main.js` manages the existing USB-backed KITC records and writes JSON data to the USB `database/` folder.
+- `src/secretary-suite.js` provides Secretary-specific workflows such as follow-ups, decisions, journal, letters, templates and handover.
+- The reusable Universal Admin Panel is loaded from the separate Admin repository and embedded into the Secretary Desk.
+- `src/kitc-admin-panel.js` is the KITC adapter between the generic panel and the existing KITC USB data.
 
-## Modules
+The Admin Panel does **not** own KITC data. It reads and writes the same KITC USB records through the adapter.
 
-Dashboard, Members, Management, Meetings, Tasks, Programs & Events, Attendance, IT/Assets, Documents, Announcements, Reports, Global Search, Handover Center, Settings.
+## Admin access
 
-## Core principle
+The Secretary/Admin path requires the existing KITC USB + Secretary password gate. After unlock, use **🔐 Admin Panel** in the sidebar.
 
-KITC owns the system. Secretaries and management terms are records that change over time; historical records are preserved.
+The Universal Panel receives KITC resources such as Members, Meetings, Tasks, Programs & Events, Attendance, Documents and IT/Assets. Admin permissions expose Create, Update and Delete controls.
 
-## Development
+Normal/read-only access must remain separate from admin authorization. UI controls are not a security boundary; protected production data should enforce permissions at the storage/backend layer as well.
 
-Open `index.html` directly for the static shell, or serve the repository with any static web server. Backend integration will be added after the data model and UI flows are finalized.
+## USB synchronization
+
+KITC uses the browser File System Access API for the USB workflow. The browser asks the user to explicitly select the KITC folder and grant access. The admin adapter uses the existing `kitcSave()` path, so edits made through the Admin Panel are written back to the same USB JSON files used by the Secretary Desk.
+
+The admin integration also checks the USB JSON files periodically and reloads changed records so the panel can react when a file changes outside the panel while the authorized USB handle remains available.
+
+This browser capability requires a supported browser and secure context (normally HTTPS). See the browser compatibility requirements before relying on USB access in production.
+
+## Reusable Admin Panel
+
+The generic panel lives in the separate Admin repository. It provides the shell, navigation, generic resource UI, CRUD controls, permissions-aware UI and a host-project adapter boundary. KITC supplies the data and authentication context.
+
+Keep project-specific business logic in this repository, not in the reusable Admin Panel core.
+
+## Existing data model
+
+The USB database currently uses JSON records for members, meetings, tasks, events, attendance, issues and documents, with additional Secretary-suite records such as follow-ups, decisions, journal entries, letters, timelines and meeting templates.
+
+## Changelog
+
+### 2026-09-05 — Embedded Universal Admin Panel
+- Added the upgraded reusable Admin Panel integration to the KITC Secretary Desk.
+- Connected Admin Panel resource CRUD to the existing KITC USB-backed records.
+- Added periodic USB change detection so external record edits can refresh the admin view.
+- Added an Admin Panel entry inside the Secretary Desk after the existing USB/password unlock.
+- Added the missing `kitcSetupHint` element required by the USB gate.
