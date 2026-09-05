@@ -74,6 +74,11 @@ Before modifying this repository:
 
 ## Changelog
 
+### 2026-09-05 — Hard-hide all Secretary Desk Add/Edit/Update controls
+- Added a final read-only UI guard to the Secretary Desk content area so Add, Edit, Update and quick-add controls are hidden even if an older page script still injects them.
+- Scoped the guard to `#content` so the Universal Admin Panel remains the dedicated CRUD surface.
+- Kept non-CRUD actions such as search, reports, backup, export and handover available.
+
 ### 2026-09-05 — Centralize CRUD in Admin Panel and add Member View preview
 - Removed Add, Edit and Delete controls from the main Secretary Desk record pages so they are read-only.
 - Removed Secretary-suite create/edit controls and kept only non-CRUD utilities such as report generation, letter export and handover.
