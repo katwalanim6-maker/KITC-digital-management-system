@@ -1,26 +1,32 @@
 # KITC Digital Management System
 
-KITC Secretary Hub with a browser-based Secretary Desk and USB-backed institutional records.
+KITC Secretary Hub with a public landing page, a separate role-aware access screen, a browser-based Secretary Desk and USB-backed institutional records.
 
 https://katwalanim6-maker.github.io/KITC-digital-management-system/
 
 ## Current architecture
 
-- `secretary-desk.html` is the Secretary workspace.
+- `index.html` is the public landing page and project entry point.
+- `access.html` is the separate Member / Executive / Admin role-selection screen.
+- `secretary-desk.html` is the authenticated Secretary workspace and Admin login boundary.
 - `src/main.js` manages the existing USB-backed KITC records and writes JSON data to the USB `database/` folder.
 - `src/secretary-suite.js` provides Secretary-specific workflows such as follow-ups, decisions, journal, letters, templates and handover.
 - The reusable Universal Admin Panel is loaded from the separate Admin repository and embedded into the Secretary Desk.
 - `src/kitc-admin-panel.js` is the KITC adapter between the generic panel and the existing KITC USB data.
-- `src/login-selector.js` controls the first-step Member / Executive / Admin access selector.
+- `src/login-selector.js` powers the separate access-screen role selector and keeps Member / Executive authentication explicitly unconfigured until real providers are connected.
 
 The Admin Panel does **not** own KITC data. It reads and writes the same KITC USB records through the adapter.
 
-## Login / access selection
+## Public entry and access selection
 
-The first screen asks **What type of user are you?** and provides Member, Executive and Admin choices.
+The public GitHub Pages root now opens the KITC landing page rather than the Secretary Desk. The landing page explains the system and sends users to `access.html`.
 
-- **Admin** opens the existing KITC USB + password authentication flow and, after unlock, provides the Universal Admin Panel with CRUD access.
-- **Member** and **Executive** currently show an explicit not-configured message rather than bypassing authentication. Their real login providers can be connected later without changing the reusable Admin Panel.
+The access screen asks **Choose your workspace** and provides Member, Executive and Admin choices.
+
+- **Admin** continues to the existing `secretary-desk.html` Admin Login, which requires the KITC Secretary USB and Admin password.
+- **Member** and **Executive** show explicit not-configured messages rather than bypassing authentication. Their real login providers can be connected later without changing the reusable Admin Panel.
+
+The Secretary Desk no longer carries the public role selector. It is the authenticated Admin workspace only, which keeps the public entry flow and protected operational workspace separate.
 
 ## Admin access
 
@@ -62,20 +68,11 @@ Before modifying this repository:
 
 ## Changelog
 
-### 2026-09-05 — Repair mobile login gate CSS
-- Fixed the missing `.kitc-gate-logo` sizing rule that allowed the full-size logo image to overflow the login card on mobile.
-- Added contained, responsive logo dimensions so the role selector stays inside the centered login card.
-- Added a smaller mobile logo size for narrow screens.
-
-### 2026-09-05 — Add role-based login selector
-- Added the first-screen Member / Executive / Admin selector.
-- Connected Admin selection to the existing USB + password gate.
-- Added clear placeholders for Member and Executive authentication instead of bypassing login.
-- Added the selector to the mobile-responsive Secretary Desk login flow.
-
-### 2026-09-05 — Repair GitHub Pages deployment target
-- Fixed the Pages workflow so it validates and deploys the KITC Secretary Desk instead of the legacy Attendance Admin validation path.
-- Changed the root Pages entry to open `secretary-desk.html`, matching the documented KITC management system architecture.
-- Preserved the Attendance Admin entry as `attendance-admin.html` rather than letting it control the management-system root.
-- Added validation for the Secretary Desk modules, including the role selector and embedded Universal Admin Panel integration.
-- Kept this deployment repair and its README changelog entry in the same commit.
+### 2026-09-05 — Add public landing and separate access flow
+- Replaced the GitHub Pages root redirect with a responsive KITC public landing page explaining the system, capabilities and architecture.
+- Added `access.html` as a separate role-aware entry screen for Member, Executive and Admin access.
+- Moved the role-selector behavior into `src/login-selector.js` so the public access screen owns role selection while the Secretary Desk remains an Admin-only authenticated workspace.
+- Kept Member and Executive authentication explicitly unconfigured instead of bypassing authentication.
+- Simplified `secretary-desk.html` to focus on the existing USB + password Admin boundary and protected Secretary workspace.
+- Updated the Pages workflow to validate the new landing/access/desk separation and JavaScript syntax.
+- Preserved the reusable Universal Admin Panel as a separate generic component with KITC-specific integration remaining in `src/kitc-admin-panel.js`.
