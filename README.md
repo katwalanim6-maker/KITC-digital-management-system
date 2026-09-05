@@ -32,6 +32,8 @@ The Secretary Desk no longer carries the public role selector. It is the authent
 
 The existing Secretary USB + password gate is the admin access boundary. After unlock, use **🔐 Admin Panel** in the sidebar.
 
+The Admin Login is presented as a dedicated protected-workspace screen with responsive desktop/mobile layouts, a clear USB → password → workspace flow, connection state, password visibility control, accessible status messaging and a direct return to workspace selection. The authentication behavior remains the existing USB manifest + password-verifier boundary; the redesign does not add fake authentication or expose credentials.
+
 The Universal Panel receives KITC resources such as Members, Meetings, Tasks, Programs & Events, Attendance, Documents and IT/Assets. Admin permissions expose Create, Update and Delete controls.
 
 Normal/read-only access must remain separate from admin authorization. UI controls are not a security boundary; protected production data should enforce permissions at the storage/backend layer as well.
@@ -67,6 +69,13 @@ Before modifying this repository:
 7. Keep the code change and its README changelog entry in the same commit.
 
 ## Changelog
+
+### 2026-09-05 — Polish Admin Login experience
+- Reworked the protected Admin Login into a responsive desktop/mobile two-panel experience with KITC branding, security context and a clear USB → password → workspace progression.
+- Added a direct return link to the workspace selection screen and kept Member / Executive authentication unchanged.
+- Added password visibility control and accessible live status messaging.
+- Updated the USB gate so Admin unlock remains disabled until a valid KITC USB folder is connected, with clearer connected/new-USB guidance and preserved password-verifier behavior.
+- Kept the existing USB + password authentication boundary and did not introduce client-side fake authentication or expose credentials.
 
 ### 2026-09-05 — Add public landing and separate access flow
 - Replaced the GitHub Pages root redirect with a responsive KITC public landing page explaining the system, capabilities and architecture.
