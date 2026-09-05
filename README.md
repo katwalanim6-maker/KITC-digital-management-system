@@ -66,3 +66,16 @@ Before modifying this repository:
 - Fixed the missing `.kitc-gate-logo` sizing rule that allowed the full-size logo image to overflow the login card on mobile.
 - Added contained, responsive logo dimensions so the role selector stays inside the centered login card.
 - Added a smaller mobile logo size for narrow screens.
+
+### 2026-09-05 — Add role-based login selector
+- Added the first-screen Member / Executive / Admin selector.
+- Connected Admin selection to the existing USB + password gate.
+- Added clear placeholders for Member and Executive authentication instead of bypassing login.
+- Added the selector to the mobile-responsive Secretary Desk login flow.
+
+### 2026-09-05 — Repair GitHub Pages deployment target
+- Fixed the Pages workflow so it validates and deploys the KITC Secretary Desk instead of the legacy Attendance Admin validation path.
+- Changed the root Pages entry to open `secretary-desk.html`, matching the documented KITC management system architecture.
+- Preserved the Attendance Admin entry as `attendance-admin.html` rather than letting it control the management-system root.
+- Added validation for the Secretary Desk modules, including the role selector and embedded Universal Admin Panel integration.
+- Kept this deployment repair and its README changelog entry in the same commit.
