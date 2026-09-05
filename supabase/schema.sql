@@ -17,6 +17,7 @@ create table public.profiles (
 
 create table public.members (
   id uuid primary key default gen_random_uuid(),
+  user_id uuid unique references auth.users(id) on delete set null,
   full_name text not null,
   photo_url text,
   class_name text,
@@ -24,10 +25,28 @@ create table public.members (
   phone text,
   email text,
   position_title text,
+  interest text,
   join_date date,
   status record_status not null default 'active',
   notes text,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table public.member_applications (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null unique references auth.users(id) on delete cascade,
+  full_name text not null,
+  email text not null,
+  class_name text,
+  section text,
+  phone text,
+  interest text,
+  status record_status not null default 'inactive',
+  submitted_at timestamptz not null default now(),
+  reviewed_at timestamptz,
+  reviewed_by uuid references public.profiles(id),
+  review_note text,
   updated_at timestamptz not null default now()
 );
 
@@ -173,6 +192,7 @@ create table public.activity_logs (
 
 alter table public.profiles enable row level security;
 alter table public.members enable row level security;
+alter table public.member_applications enable row level security;
 alter table public.management_terms enable row level security;
 alter table public.management_members enable row level security;
 alter table public.meetings enable row level security;
@@ -188,5 +208,6 @@ alter table public.documents enable row level security;
 alter table public.announcements enable row level security;
 alter table public.activity_logs enable row level security;
 
--- Policy layer is intentionally added after the information model is reviewed.
--- This prevents the frontend prototype from accidentally defining production permissions.
+-- Member registration stores the selected interest on both the pending application and approved member record.
+-- Interest values accepted by the application RPC are: Graphic designing, Frontend development, Backend development, Editing, Networking.
+-- Production policies/functions are applied through Supabase migrations after the information model is created.
