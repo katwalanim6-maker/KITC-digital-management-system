@@ -74,6 +74,11 @@ Before modifying this repository:
 
 ## Changelog
 
+### 2026-09-05 — Remove legacy Secretary CRUD scripts to prevent button flash
+- Removed the legacy `documents.js`, `members.js` and `member-profile.js` scripts from `secretary-desk.html`.
+- These older modules still contained Add/Edit/Delete UI and were executing after the new read-only renderer, causing CRUD buttons to appear briefly before the CSS guard hid them.
+- The Secretary Desk now loads only the read-only core/suite modules plus the centralized Admin Panel integration.
+
 ### 2026-09-05 — Hard-hide all Secretary Desk Add/Edit/Update controls
 - Added a final read-only UI guard to the Secretary Desk content area so Add, Edit, Update and quick-add controls are hidden even if an older page script still injects them.
 - Scoped the guard to `#content` so the Universal Admin Panel remains the dedicated CRUD surface.
