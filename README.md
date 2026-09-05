@@ -10,7 +10,7 @@ https://katwalanim6-maker.github.io/KITC-digital-management-system/
 - `access.html` is the separate Member / Executive / Admin role-selection screen.
 - `secretary-desk.html` is the authenticated Secretary workspace and Admin login boundary.
 - `src/main.js` manages the existing USB-backed KITC records and writes JSON data to the USB `database/` folder.
-- `src/secretary-suite.js` provides Secretary-specific workflows such as follow-ups, decisions, journal, letters, templates and handover.
+- `src/secretary-suite.js` provides Secretary-specific read-only workflows such as follow-ups, decisions, journal, letters and templates, while preserving export/report/handover utilities.
 - The reusable Universal Admin Panel is loaded from the separate Admin repository and embedded into the Secretary Desk.
 - `src/kitc-admin-panel.js` is the KITC adapter between the generic panel and the existing KITC USB data.
 - `src/login-selector.js` powers the separate access-screen role selector and keeps Member / Executive authentication explicitly unconfigured until real providers are connected.
@@ -19,30 +19,34 @@ The Admin Panel does **not** own KITC data. It reads and writes the same KITC US
 
 ## Public entry and access selection
 
-The public GitHub Pages root now opens the KITC landing page rather than the Secretary Desk. The landing page explains the system and sends users to `access.html`.
+The public GitHub Pages root opens the KITC landing page. The landing page sends users to `access.html`.
 
 The access screen asks **Choose your workspace** and provides Member, Executive and Admin choices.
 
 - **Admin** continues to the existing `secretary-desk.html` Admin Login, which requires the KITC Secretary USB and Admin password.
 - **Member** and **Executive** show explicit not-configured messages rather than bypassing authentication. Their real login providers can be connected later without changing the reusable Admin Panel.
 
-The Secretary Desk no longer carries the public role selector. It is the authenticated Admin workspace only, which keeps the public entry flow and protected operational workspace separate.
+The Secretary Desk is the protected Admin/Secretary workspace.
 
 ## Admin access
 
 The existing Secretary USB + password gate is the admin access boundary. After unlock, use **🔐 Admin Panel** in the sidebar.
 
-The Admin Login is presented as a dedicated protected-workspace screen with responsive desktop/mobile layouts, a clear USB → password → workspace flow, connection state, password visibility control, accessible status messaging and a direct return to workspace selection. The authentication behavior remains the existing USB manifest + password-verifier boundary; the redesign does not add fake authentication or expose credentials.
+The Universal Panel provides the centralized CRUD surface. Admin permissions expose Create, Update and Delete controls for KITC resources. The Admin dashboard also provides **View as Member**, a read-only member-experience preview with selectable member records.
 
-The Universal Panel receives KITC resources such as Members, Meetings, Tasks, Programs & Events, Attendance, Documents and IT/Assets. Admin permissions expose Create, Update and Delete controls.
+Normal/read-only access remains separate from admin authorization. UI controls are not a security boundary; protected production data should enforce permissions at the storage/backend layer as well.
 
-Normal/read-only access must remain separate from admin authorization. UI controls are not a security boundary; protected production data should enforce permissions at the storage/backend layer as well.
+## Secretary Desk permissions
+
+The Secretary Desk is intentionally read-only for record management. Add, Edit and Delete controls have been removed from the dashboard, record pages and Secretary-suite record pages. CRUD is centralized in the Admin Panel instead.
+
+Reports, USB backups, document export and handover utilities remain available because they do not modify the underlying record through CRUD forms.
 
 ## USB synchronization
 
 KITC uses the browser File System Access API for the USB workflow. The browser asks the user to explicitly select the KITC folder and grant access. The admin adapter uses the existing `kitcSave()` path, so edits made through the Admin Panel are written back to the same USB JSON files used by the Secretary Desk.
 
-The admin integration also checks the USB JSON files periodically and reloads changed records so the panel can react when a file changes outside the panel while the authorized USB handle remains available.
+The admin integration checks the USB JSON files periodically and reloads changed records so the panel can react when a file changes outside the panel while the authorized USB handle remains available.
 
 This browser capability requires a supported browser and secure context (normally HTTPS), and the user must explicitly grant directory access.
 
@@ -54,7 +58,7 @@ Keep project-specific business logic in this repository, not in the reusable Adm
 
 ## Existing data model
 
-The USB database currently uses JSON records for members, meetings, tasks, events, attendance, issues and documents, with additional Secretary-suite records such as follow-ups, decisions, journal entries, letters, timelines and meeting templates.
+The USB database uses JSON records for members, meetings, tasks, events, attendance, issues and documents, with additional Secretary-suite records such as follow-ups, decisions, journal entries, letters, timelines and meeting templates.
 
 ## AI development instructions
 
@@ -69,6 +73,13 @@ Before modifying this repository:
 7. Keep the code change and its README changelog entry in the same commit.
 
 ## Changelog
+
+### 2026-09-05 — Centralize CRUD in Admin Panel and add Member View preview
+- Removed Add, Edit and Delete controls from the main Secretary Desk record pages so they are read-only.
+- Removed Secretary-suite create/edit controls and kept only non-CRUD utilities such as report generation, letter export and handover.
+- Expanded the KITC Admin adapter so the centralized Admin Panel can CRUD the Secretary-suite records too.
+- Added a read-only **View as Member** preview from the Admin Panel, including member selection and a member-style overview of events, tasks and attendance.
+- Preserved the USB-backed source of truth and reusable Universal Admin Panel boundary.
 
 ### 2026-09-05 — Hard-fix authenticated KITC logo sizing
 - Added high-specificity, `!important` size constraints directly to the Secretary Desk page for the sidebar and mobile topbar logo images.
