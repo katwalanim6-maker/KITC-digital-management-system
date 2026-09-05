@@ -2,7 +2,7 @@
   'use strict';
 
   const URL = 'https://viwhijpofsgwcsbnkzrv.supabase.co';
-  const PUBLISHABLE_KEY = 'REPLACE_WITH_KITC_SUPABASE_PUBLISHABLE_KEY';
+  const PUBLISHABLE_KEY = 'sb_publishable_ruGFxvzoWdV9He1Y2zLrGQ_0Apyn02y';
 
   const init = () => {
     if (!window.supabase?.createClient) {
