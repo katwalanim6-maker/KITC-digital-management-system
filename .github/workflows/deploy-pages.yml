@@ -1,4 +1,4 @@
-name: Deploy KITC Attendance Admin to GitHub Pages
+name: Deploy KITC Secretary Desk to GitHub Pages
 
 on:
   push:
@@ -24,23 +24,42 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate attendance app
+      - name: Validate Secretary Desk
         shell: bash
         run: |
           set -euo pipefail
           test -f index.html
-          test -f src/attendance-admin.css
-          test -f src/attendance-admin.js
-          test -f src/attendance-invite.js
-          test -f src/attendance-enhancements.js
-          test -f src/attendance-report-fix.js
-          node --check src/attendance-admin.js
-          node --check src/attendance-invite.js
-          node --check src/attendance-enhancements.js
-          node --check src/attendance-report-fix.js
-          grep -q 'src/attendance-admin.js' index.html
-          grep -q 'src/attendance-admin.css' index.html
-          echo 'Attendance app validation passed.'
+          test -f secretary-desk.html
+          test -f src/kitc-bootstrap.js
+          test -f src/main.js
+          test -f src/secretary-suite.js
+          test -f src/login-selector.js
+          test -f src/usb-gate.js
+          test -f src/documents.js
+          test -f src/members.js
+          test -f src/member-profile.js
+          test -f src/supabase-client.js
+          test -f src/polish.js
+          test -f src/dashboard-polish.js
+          test -f src/runtime.js
+          test -f src/kitc-admin-panel.js
+          node --check src/kitc-bootstrap.js
+          node --check src/main.js
+          node --check src/secretary-suite.js
+          node --check src/login-selector.js
+          node --check src/usb-gate.js
+          node --check src/documents.js
+          node --check src/members.js
+          node --check src/member-profile.js
+          node --check src/supabase-client.js
+          node --check src/polish.js
+          node --check src/dashboard-polish.js
+          node --check src/runtime.js
+          node --check src/kitc-admin-panel.js
+          grep -q 'secretary-desk.html' index.html
+          grep -q 'src/login-selector.js' secretary-desk.html
+          grep -q 'src/kitc-admin-panel.js' secretary-desk.html
+          echo 'KITC Secretary Desk validation passed.'
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
