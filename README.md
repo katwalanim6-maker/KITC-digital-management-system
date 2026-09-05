@@ -11,8 +11,16 @@ https://katwalanim6-maker.github.io/KITC-digital-management-system/
 - `src/secretary-suite.js` provides Secretary-specific workflows such as follow-ups, decisions, journal, letters, templates and handover.
 - The reusable Universal Admin Panel is loaded from the separate Admin repository and embedded into the Secretary Desk.
 - `src/kitc-admin-panel.js` is the KITC adapter between the generic panel and the existing KITC USB data.
+- `src/login-selector.js` controls the first-step Member / Executive / Admin access selector.
 
 The Admin Panel does **not** own KITC data. It reads and writes the same KITC USB records through the adapter.
+
+## Login / access selection
+
+The first screen asks **What type of user are you?** and provides Member, Executive and Admin choices.
+
+- **Admin** opens the existing KITC USB + password authentication flow and, after unlock, provides the Universal Admin Panel with CRUD access.
+- **Member** and **Executive** currently show an explicit not-configured message rather than bypassing authentication. Their real login providers can be connected later without changing the reusable Admin Panel.
 
 ## Admin access
 
@@ -54,13 +62,8 @@ Before modifying this repository:
 
 ## Changelog
 
-### 2026-09-05 — Admin adapter compatibility fix
-- Fixed the KITC Admin adapter so existing normalized `values` records are mapped into the Universal Panel's named table fields.
-- Ensured Admin Panel create/update operations convert records back to the Secretary Desk's existing USB JSON format.
-
-### 2026-09-05 — Embedded Universal Admin Panel
-- Added the upgraded reusable Admin Panel integration to the KITC Secretary Desk.
-- Connected Admin Panel resource CRUD to the existing KITC USB-backed records.
-- Added periodic USB change detection so external record edits can refresh the admin view.
-- Added an Admin Panel entry inside the Secretary Desk after the existing USB/password unlock.
-- Added the missing `kitcSetupHint` element required by the USB gate.
+### 2026-09-05 — Add role-based login selector
+- Added the first-screen Member / Executive / Admin selector.
+- Connected Admin selection to the existing USB + password gate.
+- Added clear placeholders for Member and Executive authentication instead of bypassing login.
+- Added the selector to the mobile-responsive Secretary Desk login flow.
