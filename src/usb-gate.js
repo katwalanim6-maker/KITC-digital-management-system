@@ -34,7 +34,10 @@
 
   const setConnectedState = connected => {
     usbConnected = Boolean(connected);
-    unlockButton.disabled = !usbConnected;
+    // Keep the button natively clickable. Authorization is enforced by unlock().
+    unlockButton.disabled = false;
+    unlockButton.setAttribute('aria-disabled', String(!usbConnected));
+    unlockButton.classList.toggle('is-disabled', !usbConnected);
     connectButton.textContent = usbConnected ? '✓ USB Connected' : '↯ Connect KITC USB';
     connectButton.dataset.connected = usbConnected ? 'true' : 'false';
   };
@@ -119,7 +122,6 @@
       return;
     }
 
-    unlockButton.disabled = true;
     setStatus('Verifying Admin access…');
     try {
       const value = password.value;
@@ -159,7 +161,9 @@
       console.error('KITC unlock failed', error);
       setStatus(`Unlock failed: ${error.message || 'Unable to verify Admin access.'}`);
     } finally {
-      unlockButton.disabled = !usbConnected || !usbHandle || !manifest;
+      unlockButton.disabled = false;
+      unlockButton.setAttribute('aria-disabled', String(!usbConnected || !usbHandle || !manifest));
+      unlockButton.classList.toggle('is-disabled', !usbConnected || !usbHandle || !manifest);
     }
   };
 
@@ -175,7 +179,7 @@
 
   connectButton.addEventListener('click', connectUsb);
   unlockButton.addEventListener('click', unlock);
-  password.addEventListener('keydown', event => { if (event.key === 'Enter' && !unlockButton.disabled) unlock(event); });
+  password.addEventListener('keydown', event => { if (event.key === 'Enter') unlock(event); });
   passwordToggle?.addEventListener('click', togglePassword);
   gate.removeAttribute('hidden');
   app.setAttribute('hidden', '');

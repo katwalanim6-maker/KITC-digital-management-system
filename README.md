@@ -70,6 +70,12 @@ Before modifying this repository:
 
 ## Changelog
 
+### 2026-09-05 — Make Admin unlock button reliably clickable
+- Removed the native `disabled` state from the Admin unlock button, which could prevent the button from receiving a click after USB connection state changes in some browser/runtime conditions.
+- Replaced it with an explicit `aria-disabled` + visual state while keeping the JavaScript guard as the actual access check.
+- Kept the USB connection requirement, password verification and protected workspace boundary intact.
+- Preserved the password visibility control and existing USB manifest authentication behavior.
+
 ### 2026-09-05 — Repair Admin unlock interaction
 - Hardened the Admin USB/password unlock state so the button tracks an explicit connected-USB state instead of relying only on DOM state.
 - Improved password verification feedback, focus behavior and error reporting so failed unlocks are visible instead of appearing unresponsive.
