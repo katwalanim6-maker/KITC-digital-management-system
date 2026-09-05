@@ -70,6 +70,16 @@ Before modifying this repository:
 
 ## Changelog
 
+### 2026-09-05 — Hard-fix authenticated KITC logo sizing
+- Added high-specificity, `!important` size constraints directly to the Secretary Desk page for the sidebar and mobile topbar logo images.
+- Prevented intrinsic image dimensions or other global image rules from allowing the KITC logo to expand over the authenticated workspace.
+- Kept the Admin Login logo styling separate from the authenticated workspace logo.
+
+### 2026-09-05 — Fix oversized KITC logo after Admin unlock
+- Constrained the authenticated Secretary Desk sidebar and mobile topbar KITC logos to fixed responsive dimensions.
+- Added `object-fit: contain` and max-size guards so the source logo cannot expand to its intrinsic image dimensions and cover the workspace.
+- Kept the Admin Login branding unchanged.
+
 ### 2026-09-05 — Make Admin unlock button reliably clickable
 - Removed the native `disabled` state from the Admin unlock button, which could prevent the button from receiving a click after USB connection state changes in some browser/runtime conditions.
 - Replaced it with an explicit `aria-disabled` + visual state while keeping the JavaScript guard as the actual access check.
