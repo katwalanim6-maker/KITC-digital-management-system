@@ -30,7 +30,7 @@ The Secretary Desk is the protected Admin/Secretary workspace.
 
 ## Admin access
 
-The existing Secretary USB + password gate is the admin access boundary. After unlock, use **🔐 Admin Panel** in the sidebar.
+The existing Secretary USB + password gate is the admin access boundary. After unlock, use **Admin Panel** in the sidebar.
 
 The Universal Panel provides the centralized CRUD surface. Admin permissions expose Create, Update and Delete controls for KITC resources. The Admin dashboard also provides **View as Member**, a read-only member-experience preview with selectable member records.
 
@@ -60,6 +60,32 @@ Keep project-specific business logic in this repository, not in the reusable Adm
 
 The USB database uses JSON records for members, meetings, tasks, events, attendance, issues and documents, with additional Secretary-suite records such as follow-ups, decisions, journal entries, letters, timelines and meeting templates.
 
+## Public design standards
+
+The public KITC site and shared KITC visual layer should remain deliberate and restrained:
+
+- No purple gradients or decorative color washes.
+- No pill-shaped controls or badges.
+- No fake reviews, testimonials, customer counts or fabricated usage metrics.
+- No emoji characters as primary interface icons.
+- No vague marketing claims when a concrete description is available.
+- No em dashes in public copy.
+- No cursor-following effects or unnecessary scroll animations.
+- No AI-generated decorative photography or filler imagery.
+- No AI-generated filler copy.
+- No fake activity, fake records or invented operational claims presented as real.
+- Keep controls rectangular with modest corner radii and clear borders.
+- Prefer real project terminology and explain what the system actually does.
+- Preserve accessibility, responsive behavior and reduced-motion support.
+
+The public landing page now describes the real modules without presenting invented statistics. The shared KITC theme also uses a neutral dark palette without purple gradients or excessive glass effects.
+
+## Legal pages
+
+- `privacy.html` contains the public privacy policy.
+- `terms.html` contains the public terms and conditions.
+- `favicon.svg` provides the project favicon.
+
 ## AI development instructions
 
 Before modifying this repository:
@@ -69,10 +95,17 @@ Before modifying this repository:
 3. Keep the Universal Admin Panel generic; KITC-specific logic belongs in the KITC adapter/integration.
 4. Do not expose secrets or service-role credentials in frontend files.
 5. Validate changed JavaScript/HTML and inspect the final repository state.
-6. Update this README with a brief description of **every commit/change**.
-7. Keep the code change and its README changelog entry in the same commit.
+6. Follow the public design standards above.
+7. Update this README with a brief description of **every commit/change**.
+8. Keep the code change and its README changelog entry in the same commit where practical.
 
 ## Changelog
+
+### 2026-09-05 — Refine public design and legal pages
+- Reworked the public landing page with a restrained dark interface, rectangular controls and concrete KITC system copy.
+- Removed purple gradients, gradient headline treatment, pill-shaped eyebrow styling, decorative emoji icons, fake dashboard numbers and excessive visual effects from the public page.
+- Added `favicon.svg`, `privacy.html` and `terms.html` and linked the legal pages from the public footer.
+- Removed decorative blur and purple gradient treatments from the shared KITC theme while preserving responsive behavior and the existing Secretary Desk architecture.
 
 ### 2026-09-05 — Remove legacy Secretary CRUD scripts to prevent button flash
 - Removed the legacy `documents.js`, `members.js` and `member-profile.js` scripts from `secretary-desk.html`.
