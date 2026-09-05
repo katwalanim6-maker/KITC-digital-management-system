@@ -14,7 +14,7 @@ The Admin Panel does **not** own KITC data. It reads and writes the same KITC US
 
 ## Admin access
 
-The Secretary/Admin path requires the existing KITC USB + Secretary password gate. After unlock, use **🔐 Admin Panel** in the sidebar.
+The existing Secretary USB + password gate is the admin access boundary. After unlock, use **🔐 Admin Panel** in the sidebar.
 
 The Universal Panel receives KITC resources such as Members, Meetings, Tasks, Programs & Events, Attendance, Documents and IT/Assets. Admin permissions expose Create, Update and Delete controls.
 
@@ -26,11 +26,11 @@ KITC uses the browser File System Access API for the USB workflow. The browser a
 
 The admin integration also checks the USB JSON files periodically and reloads changed records so the panel can react when a file changes outside the panel while the authorized USB handle remains available.
 
-This browser capability requires a supported browser and secure context (normally HTTPS). See the browser compatibility requirements before relying on USB access in production.
+This browser capability requires a supported browser and secure context (normally HTTPS), and the user must explicitly grant directory access.
 
 ## Reusable Admin Panel
 
-The generic panel lives in the separate Admin repository. It provides the shell, navigation, generic resource UI, CRUD controls, permissions-aware UI and a host-project adapter boundary. KITC supplies the data and authentication context.
+The generic panel lives in the separate Admin repository. It provides the shell, navigation, generic resource UI, CRUD controls, permission-aware UI and a host-project adapter boundary. KITC supplies the data and authentication context.
 
 Keep project-specific business logic in this repository, not in the reusable Admin Panel core.
 
@@ -38,7 +38,23 @@ Keep project-specific business logic in this repository, not in the reusable Adm
 
 The USB database currently uses JSON records for members, meetings, tasks, events, attendance, issues and documents, with additional Secretary-suite records such as follow-ups, decisions, journal entries, letters, timelines and meeting templates.
 
+## AI development instructions
+
+Before modifying this repository:
+
+1. Read this README completely.
+2. Preserve the existing Secretary Desk and USB data architecture unless a change explicitly requires otherwise.
+3. Keep the Universal Admin Panel generic; KITC-specific logic belongs in the KITC adapter/integration.
+4. Do not expose secrets or service-role credentials in frontend files.
+5. Validate changed JavaScript/HTML and inspect the final repository state.
+6. Update this README with a brief description of **every commit/change**.
+7. Keep the code change and its README changelog entry in the same commit.
+
 ## Changelog
+
+### 2026-09-05 — Admin adapter compatibility fix
+- Fixed the KITC Admin adapter so existing normalized `values` records are mapped into the Universal Panel's named table fields.
+- Ensured Admin Panel create/update operations convert records back to the Secretary Desk's existing USB JSON format.
 
 ### 2026-09-05 — Embedded Universal Admin Panel
 - Added the upgraded reusable Admin Panel integration to the KITC Secretary Desk.
