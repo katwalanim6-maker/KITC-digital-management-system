@@ -2,6 +2,8 @@
 
 KITC Secretary Hub with a browser-based Secretary Desk and USB-backed institutional records.
 
+https://katwalanim6-maker.github.io/KITC-digital-management-system/
+
 ## Current architecture
 
 - `secretary-desk.html` is the Secretary workspace.
