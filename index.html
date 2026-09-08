@@ -3,39 +3,229 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0b0d12">
+  <meta name="theme-color" content="#e8dfca">
   <meta name="description" content="KITC Digital Management System for members, meetings, tasks, events, attendance, documents and reports.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <title>KITC Digital Management System</title>
+  <title>KITC — Digital Management System</title>
   <style>
-    :root{color-scheme:dark;--bg:#0b0d12;--panel:#11151c;--panel2:#151a22;--line:#29313c;--muted:#9aa4b2;--text:#f4f6f8;--accent:#d7dde5;--ink:#10141a}
-    *{box-sizing:border-box}html{scroll-behavior:auto}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}a{text-decoration:none;color:inherit}.wrap{width:min(1120px,calc(100% - 40px));margin:auto}.nav{height:72px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:.01em}.brand img{width:36px;height:36px;object-fit:contain}.brand small{display:block;color:var(--muted);font-weight:600;font-size:10px;letter-spacing:.07em;text-transform:uppercase}.nav-links{display:flex;gap:24px;color:#b9c1cc;font-size:13px;font-weight:700}.nav-links a:hover{color:#fff}
-    .hero{display:grid;grid-template-columns:1.08fr .92fr;gap:56px;align-items:center;padding:92px 0 96px;border-bottom:1px solid var(--line)}.eyebrow{display:inline-block;color:#aeb7c4;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.hero h1{font-size:clamp(42px,6vw,72px);line-height:1.02;letter-spacing:-.045em;margin:18px 0 22px;max-width:760px}.hero p{max-width:650px;color:var(--muted);font-size:17px;line-height:1.75;margin:0}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border-radius:7px;border:1px solid var(--line);font-size:13px;font-weight:800}.btn.primary{background:var(--accent);color:var(--ink);border-color:var(--accent)}.btn.secondary{background:transparent;color:var(--text)}.btn:hover{border-color:#566170}
-    .dashboard-card{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:16px;box-shadow:0 20px 50px rgba(0,0,0,.22)}.window{border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#0d1117}.window-top{height:44px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 13px;gap:7px}.orb{width:6px;height:6px;border-radius:50%;background:#687382}.window-title{margin-left:auto;margin-right:auto;font-size:10px;color:#8f99a7;font-weight:800}.preview{padding:16px}.preview-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:15px}.preview-head strong{font-size:16px}.preview-head span{font-size:9px;color:#858f9d}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.stat,.row{border:1px solid var(--line);background:var(--panel2);border-radius:6px;padding:12px}.stat small{font-size:8px;color:#8f99a7}.stat b{display:block;margin-top:5px;font-size:12px}.rows{display:grid;gap:8px;margin-top:9px}.row{display:grid;grid-template-columns:10px 1fr auto;gap:9px;align-items:center}.bar{width:6px;height:6px;border-radius:50%;background:#aeb7c4}.row span{font-size:9px;color:#c7cdd5}.row em{font-size:8px;color:#858f9d;font-style:normal}.section{padding:88px 0;border-bottom:1px solid var(--line)}.section h2{font-size:34px;letter-spacing:-.035em;margin:0 0 12px}.section>p{color:var(--muted);max-width:680px;line-height:1.7}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:30px}.card{padding:23px;border:1px solid var(--line);background:var(--panel);border-radius:7px}.card h3{margin:0 0 9px;font-size:16px}.card p{margin:0;color:var(--muted);font-size:13px;line-height:1.65}.footer{padding:28px 0 40px;color:#777f8b;font-size:11px;display:flex;justify-content:space-between;gap:20px}.footer-links{display:flex;gap:16px}.footer a:hover{color:#cdd4dc}
-    @media(max-width:800px){.nav-links{display:none}.hero{grid-template-columns:1fr;gap:34px;padding:64px 0 70px}.cards{grid-template-columns:1fr}.hero p{font-size:15px}.section{padding:65px 0}}
-    @media(max-width:460px){.wrap{width:min(100% - 24px,1120px)}.hero h1{font-size:43px}.actions .btn{width:100%}.stats{grid-template-columns:1fr}.footer{display:block}.footer-links{margin-top:10px}}
+    :root{
+      color-scheme:light;
+      --paper:#e8dfca;
+      --paper-light:#f1ead8;
+      --ink:#28251f;
+      --muted:#6e675a;
+      --line:#39352d;
+      --olive:#58624b;
+      --rust:#9a604d;
+      --blue:#536b70;
+      --pink:#b98b86;
+      --white:#f7f2e5;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:var(--paper);
+      color:var(--ink);
+      font-family:Georgia,"Times New Roman",serif;
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    body:before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:20;
+      opacity:.13;
+      background-image:
+        radial-gradient(circle at 15% 20%,#000 0 1px,transparent 1.5px),
+        radial-gradient(circle at 70% 65%,#000 0 1px,transparent 1.5px),
+        radial-gradient(circle at 35% 80%,#000 0 1px,transparent 1.5px);
+      background-size:7px 9px,11px 13px,17px 19px;
+      mix-blend-mode:multiply;
+    }
+    a{text-decoration:none;color:inherit}
+    button{font:inherit}
+    .wrap{width:min(1180px,calc(100% - 48px));margin:auto}
+
+    .nav{
+      min-height:82px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      border-bottom:1px solid rgba(57,53,45,.55);
+      position:relative;
+      z-index:2;
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{width:42px;height:42px;object-fit:contain;filter:sepia(.2)}
+    .brand-name{font-size:23px;font-weight:700;letter-spacing:-.02em}
+    .brand-sub{display:block;font:700 9px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+    .nav-links{display:flex;align-items:center;gap:26px;font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;letter-spacing:.08em}
+    .nav-links a{opacity:.75;transition:opacity .2s}
+    .nav-links a:hover{opacity:1}
+    .nav-access{border:1px solid var(--ink);padding:10px 14px;border-radius:2px;background:var(--ink);color:var(--paper-light);opacity:1!important}
+
+    .hero{padding:86px 0 92px;position:relative}
+    .hero-grid{display:grid;grid-template-columns:1fr .9fr;gap:72px;align-items:center}
+    .eyebrow{font:700 10px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px}
+    .eyebrow:before{content:"";width:32px;height:1px;background:var(--ink)}
+    h1{font-size:clamp(54px,7vw,94px);line-height:.92;letter-spacing:-.055em;font-weight:500;margin:20px 0 27px;max-width:800px}
+    .hero-copy{font-size:18px;line-height:1.7;color:var(--muted);max-width:600px;margin:0}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 19px;border:1px solid var(--ink);border-radius:2px;font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;letter-spacing:.08em;transition:transform .2s,background .2s,color .2s}
+    .btn:hover{transform:translateY(-2px)}
+    .btn.primary{background:var(--ink);color:var(--paper-light)}
+    .btn.secondary{background:transparent}
+
+    .archive-frame{background:#24231f;padding:9px;border-radius:16px 16px 3px 3px;box-shadow:0 18px 45px rgba(47,40,29,.18);transform:rotate(1deg)}
+    .archive-card{background:var(--paper-light);min-height:470px;padding:30px 29px 26px;position:relative;border-radius:10px 10px 1px 1px;overflow:hidden}
+    .archive-card:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 0 35%,rgba(255,255,255,.28) 45%,transparent 58%);pointer-events:none}
+    .archive-top{display:flex;justify-content:space-between;align-items:flex-start;font:700 9px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+    .archive-title{text-align:center;margin:56px 0 30px}
+    .archive-title h2{font-size:35px;line-height:1.02;font-weight:500;margin:0 0 12px;letter-spacing:-.035em}
+    .archive-title p{font-size:12px;line-height:1.55;color:var(--muted);max-width:290px;margin:auto}
+    .film-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+    .film{height:120px;border:4px solid #f8f4e8;outline:1px solid rgba(57,53,45,.5);background:linear-gradient(135deg,#b9ad8d,#6d6b58 48%,#b56e50);position:relative;overflow:hidden}
+    .film:nth-child(2){background:linear-gradient(145deg,#727970,#b8a27e 48%,#5c5345)}
+    .film:nth-child(3){background:linear-gradient(125deg,#8d765f,#d0bd91 45%,#69716a)}
+    .film:nth-child(4){background:linear-gradient(135deg,#555f5a,#bca47c 55%,#93615a)}
+    .film:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 18px,rgba(255,255,255,.1) 19px 20px),radial-gradient(circle at 50% 60%,rgba(25,22,17,.45),transparent 48%);mix-blend-mode:soft-light}
+    .film:after{content:"";position:absolute;left:15%;right:15%;bottom:18%;height:28%;border-radius:50% 50% 10% 10%;background:rgba(44,39,31,.35);filter:blur(4px)}
+    .swatches{display:flex;gap:9px;margin-top:22px}
+    .swatch{width:22px;height:22px;border-radius:50%;border:2px solid var(--ink)}
+    .swatch.one{background:var(--paper-light)}.swatch.two{background:#c9aa7d}.swatch.three{background:#657775}.swatch.four{background:#c48e8d}
+    .archive-caption{margin-top:20px;font:700 9px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between}
+
+    .section{padding:92px 0;border-top:1px solid rgba(57,53,45,.45)}
+    .section-heading{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:38px}
+    .section-heading h2{font-size:48px;line-height:1;letter-spacing:-.045em;font-weight:500;margin:0}
+    .section-heading p{font-size:15px;line-height:1.6;color:var(--muted);max-width:380px;margin:0}
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .card{background:var(--paper-light);border:1px solid rgba(57,53,45,.65);padding:25px;min-height:220px;position:relative;transition:transform .2s,box-shadow .2s}
+    .card:hover{transform:translateY(-5px);box-shadow:0 12px 28px rgba(47,40,29,.12)}
+    .card-number{font:700 10px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted)}
+    .card h3{font-size:27px;font-weight:500;letter-spacing:-.03em;margin:45px 0 10px}
+    .card p{font-size:14px;line-height:1.65;color:var(--muted);margin:0}
+    .card-tag{position:absolute;right:20px;top:20px;border:1px solid rgba(57,53,45,.5);padding:5px 7px;font:700 8px ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;letter-spacing:.08em}
+
+    .journal{display:grid;grid-template-columns:.8fr 1.2fr;gap:65px;align-items:start}
+    .journal-note{font-size:20px;line-height:1.55;margin:0}
+    .journal-meta{font:700 9px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-top:25px}
+    .ledger{border-top:1px solid var(--line)}
+    .ledger-row{display:grid;grid-template-columns:70px 1fr auto;gap:20px;padding:19px 0;border-bottom:1px solid rgba(57,53,45,.4);align-items:center}
+    .ledger-no{font:700 10px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted)}
+    .ledger-title{font-size:18px}.ledger-status{font:700 8px ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--olive)}
+
+    .cta{background:var(--ink);color:var(--paper-light);padding:65px 50px;margin:0 0 90px;position:relative;overflow:hidden}
+    .cta:before{content:"KITC";position:absolute;right:-25px;bottom:-55px;font-size:170px;line-height:1;font-weight:700;color:rgba(255,255,255,.035);letter-spacing:-.08em}
+    .cta-inner{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;gap:40px}
+    .cta h2{font-size:45px;font-weight:500;letter-spacing:-.045em;margin:0 0 10px}.cta p{color:#bdb6a8;line-height:1.6;margin:0;max-width:600px}
+    .cta .btn{border-color:var(--paper-light);color:var(--paper-light);white-space:nowrap}.cta .btn:hover{background:var(--paper-light);color:var(--ink)}
+
+    .footer{border-top:1px solid rgba(57,53,45,.5);padding:26px 0 40px;display:flex;justify-content:space-between;gap:20px;font:700 9px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+    .footer-links{display:flex;gap:18px}.footer a:hover{color:var(--ink)}
+
+    @media(max-width:850px){
+      .nav{min-height:70px}.nav-links a:not(.nav-access){display:none}
+      .hero{padding:60px 0 70px}.hero-grid{grid-template-columns:1fr;gap:55px}.archive-frame{max-width:600px;margin:auto}
+      .cards{grid-template-columns:1fr}.section{padding:70px 0}.section-heading{display:block}.section-heading p{margin-top:16px}.journal{grid-template-columns:1fr;gap:40px}
+      .cta{padding:45px 30px;margin-bottom:70px}.cta-inner{display:block}.cta .btn{margin-top:25px}
+    }
+    @media(max-width:520px){
+      .wrap{width:calc(100% - 28px)}.brand-name{font-size:19px}.brand img{width:36px;height:36px}
+      h1{font-size:53px}.hero-copy{font-size:16px}.actions .btn{width:100%}
+      .archive-card{min-height:420px;padding:22px}.archive-title{margin:45px 0 24px}.archive-title h2{font-size:29px}.film{height:92px}
+      .section-heading h2{font-size:39px}.card h3{font-size:24px}.ledger-row{grid-template-columns:45px 1fr;gap:10px}.ledger-status{grid-column:2}.cta h2{font-size:36px}
+      .footer{display:block}.footer-links{margin-top:12px;flex-wrap:wrap}
+    }
   </style>
 </head>
 <body>
   <header class="wrap nav">
-    <a class="brand" href="index.html"><img src="Screenshot_20260821-202536.png" alt="KITC"><span>KITC<small>Digital Management</small></span></a>
-    <nav class="nav-links" aria-label="Main navigation"><a href="#capabilities">Capabilities</a><a href="#architecture">Architecture</a><a href="access.html">Access</a></nav>
+    <a class="brand" href="index.html" aria-label="KITC home">
+      <img src="Screenshot_20260821-202536.png" alt="KITC">
+      <span><span class="brand-name">KITC</span><span class="brand-sub">Digital Management</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="#archive">Archive</a>
+      <a href="#system">System</a>
+      <a href="#journal">Journal</a>
+      <a class="nav-access" href="access.html">Access</a>
+    </nav>
   </header>
+
   <main>
     <section class="wrap hero">
-      <div>
-        <div class="eyebrow">Kasturi IT Club</div>
-        <h1>KITC Digital Management System</h1>
-        <p>One structured workspace for member records, meetings, tasks, events, attendance, documents and reports. The Secretary Desk and Admin Panel operate against the same KITC records.</p>
-        <div class="actions"><a class="btn primary" href="member.html">Create account</a><a class="btn secondary" href="#capabilities">View capabilities</a></div>
-      </div>
-      <div class="dashboard-card" aria-label="KITC system preview">
-        <div class="window"><div class="window-top"><span class="orb"></span><span class="orb"></span><span class="orb"></span><span class="window-title">KITC / Secretary Desk</span></div><div class="preview"><div class="preview-head"><strong>Core modules</strong><span>MANAGEMENT WORKSPACE</span></div><div class="stats"><div class="stat"><small>RECORDS</small><b>Members</b></div><div class="stat"><small>OPERATIONS</small><b>Tasks</b></div><div class="stat"><small>REPORTING</small><b>Attendance</b></div></div><div class="rows"><div class="row"><i class="bar"></i><span>Members and profiles</span><em>Module</em></div><div class="row"><i class="bar"></i><span>Meetings and decisions</span><em>Module</em></div><div class="row"><i class="bar"></i><span>Events, documents and reports</span><em>Module</em></div></div></div></div>
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">Kasturi IT Club · Institutional Archive</div>
+          <h1>The club,<br>kept in order.</h1>
+          <p class="hero-copy">A considered digital workspace for KITC members, meetings, tasks, events, attendance, documents and reports — designed with the character of a club archive.</p>
+          <div class="actions">
+            <a class="btn primary" href="member.html">Create account</a>
+            <a class="btn secondary" href="#system">Explore archive</a>
+          </div>
+        </div>
+
+        <div class="archive-frame" aria-label="KITC archive preview">
+          <div class="archive-card">
+            <div class="archive-top"><span>KITC / 2026</span><span>Plate No. 001</span></div>
+            <div class="archive-title">
+              <h2>Keeping the<br>club connected.</h2>
+              <p>Members, records and decisions preserved in one structured workspace.</p>
+            </div>
+            <div class="film-grid" aria-hidden="true">
+              <div class="film"></div><div class="film"></div><div class="film"></div><div class="film"></div>
+            </div>
+            <div class="swatches" aria-hidden="true"><span class="swatch one"></span><span class="swatch two"></span><span class="swatch three"></span><span class="swatch four"></span></div>
+            <div class="archive-caption"><span>Analog spirit</span><span>Kasturi IT Club</span></div>
+          </div>
+        </div>
       </div>
     </section>
-    <section class="wrap section" id="capabilities"><h2>Administrative work in one place.</h2><p>The public entry point describes the actual system rather than inventing usage figures or customer activity.</p><div class="cards"><article class="card"><h3>Secretary Desk</h3><p>Read and review members, meetings, tasks, programs, attendance, documents and reports from the dedicated Secretary workspace.</p></article><article class="card"><h3>Admin Control</h3><p>The reusable Admin Panel provides centralized permission-aware CRUD controls while KITC retains ownership of its data and business rules.</p></article><article class="card"><h3>USB-backed records</h3><p>The current institutional record workflow uses the explicitly selected KITC USB folder and its JSON database files.</p></article></div></section>
-    <section class="wrap section" id="architecture"><h2>Separated responsibilities.</h2><p>The system keeps authentication, storage, business rules and the reusable administration interface as distinct concerns.</p><div class="cards"><article class="card"><h3>Members</h3><p>Member access remains separate from administration and is not presented as configured until a real authentication provider is connected.</p></article><article class="card"><h3>Executives</h3><p>Executive access remains a separate role with its own future authentication and permissions.</p></article><article class="card"><h3>Administration</h3><p>Secretary administration stays behind the USB and password boundary and uses the shared KITC records.</p></article></div></section>
+
+    <section class="wrap section" id="system">
+      <div class="section-heading">
+        <h2>The working archive.</h2>
+        <p>Everything the club needs to keep its day-to-day administration clear, searchable and connected.</p>
+      </div>
+      <div class="cards">
+        <article class="card"><span class="card-number">01 / RECORDS</span><span class="card-tag">Members</span><h3>Member Register</h3><p>Profiles, membership information and the people who make KITC what it is.</p></article>
+        <article class="card"><span class="card-number">02 / MINUTES</span><span class="card-tag">Meetings</span><h3>Meeting Journal</h3><p>Agendas, attendees, decisions, minutes and follow-up work kept together.</p></article>
+        <article class="card"><span class="card-number">03 / PROGRAMS</span><span class="card-tag">Events</span><h3>Program Archive</h3><p>Events, organizers, participants, documents and reports from club activities.</p></article>
+      </div>
+    </section>
+
+    <section class="wrap section" id="archive">
+      <div class="journal">
+        <div>
+          <div class="eyebrow">From the secretary's desk</div>
+          <p class="journal-note">“A good archive does more than store information. It keeps the story of the club understandable.”</p>
+          <p class="journal-meta">KITC Digital Management System<br>Secretary workspace · Institutional records</p>
+        </div>
+        <div class="ledger">
+          <div class="ledger-row"><span class="ledger-no">A—01</span><span class="ledger-title">Attendance Register</span><span class="ledger-status">Organized</span></div>
+          <div class="ledger-row"><span class="ledger-no">A—02</span><span class="ledger-title">Tasks & Responsibilities</span><span class="ledger-status">Organized</span></div>
+          <div class="ledger-row"><span class="ledger-no">A—03</span><span class="ledger-title">Documents & Notices</span><span class="ledger-status">Organized</span></div>
+          <div class="ledger-row"><span class="ledger-no">A—04</span><span class="ledger-title">Reports & History</span><span class="ledger-status">Organized</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap cta" id="journal">
+      <div class="cta-inner">
+        <div><h2>Ready to enter the archive?</h2><p>Access the KITC workspace or create your member account from the official entry point.</p></div>
+        <a class="btn" href="access.html">Enter KITC</a>
+      </div>
+    </section>
   </main>
-  <footer class="wrap footer"><strong>KITC Digital Management System</strong><span class="footer-links"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><span>Kasturi IT Club</span></span></footer>
+
+  <footer class="wrap footer">
+    <strong>KITC Digital Management System</strong>
+    <span class="footer-links"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><span>Kasturi IT Club</span></span>
+  </footer>
 </body>
 </html>
