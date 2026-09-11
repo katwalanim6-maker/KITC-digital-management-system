@@ -12,7 +12,6 @@
     const upcoming = rows('events').filter(r => vals('events', r)[3] !== 'Completed').slice(0, 4);
     const meetings = rows('meetings').slice(-4).reverse();
     const followups = rows('followups').filter(r => r.status !== 'Done').slice(0, 4);
-    const connected = Boolean(window.kitcUsbHandle);
     const supabase = window.kitcSupabaseStatus?.state || 'offline';
 
     document.querySelectorAll('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.section === 'dashboard'));
@@ -24,7 +23,7 @@
         <div>
           <div class="eyebrow">KITC • 2026–27 • SECRETARY DESK</div>
           <h1>Good afternoon, Anim 👋</h1>
-          <p>Your private command center. USB is the source of truth; Supabase is the connected cloud layer.</p>
+          <p>Your private command center. The workspace is ready; records can be stored locally or through the connected cloud layer.</p>
         </div>
         <button class="button primary" type="button" id="kitcQuickAdd">＋ Quick Add</button>
       </div>
@@ -37,8 +36,8 @@
       </div>
 
       <div class="kitc-status-strip">
-        <span><i class="kitc-status-dot ${connected ? 'is-connected' : ''}"></i> USB ${connected ? 'connected' : 'not connected'}</span>
-        <span><i class="kitc-status-dot ${supabase === 'connected' ? 'is-connected' : ''}"></i> Supabase ${supabase}</span>
+        <span><i class="kitc-status-dot is-connected"></i> Workspace ready</span>
+        <span><i class="kitc-status-dot ${supabase === 'connected' ? 'is-connected' : ''}"></i> Cloud ${supabase}</span>
         <span>Secretary tools ready</span>
       </div>
 
