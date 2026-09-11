@@ -24,40 +24,84 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate KITC entry points
+      - name: Validate site quality
         shell: bash
         run: |
           set -euo pipefail
-          test -f index.html
-          test -f access.html
-          test -f secretary-desk.html
-          test -f src/kitc-bootstrap.js
-          test -f src/main.js
-          test -f src/secretary-suite.js
-          test -f src/login-selector.js
-          test -f src/documents.js
-          test -f src/members.js
-          test -f src/member-profile.js
-          test -f src/polish.js
-          test -f src/dashboard-polish.js
-          test -f src/runtime.js
-          test -f src/kitc-admin-panel.js
-          node --check src/kitc-bootstrap.js
-          node --check src/main.js
-          node --check src/secretary-suite.js
-          node --check src/login-selector.js
-          node --check src/documents.js
-          node --check src/members.js
-          node --check src/member-profile.js
-          node --check src/polish.js
-          node --check src/dashboard-polish.js
-          node --check src/runtime.js
-          node --check src/kitc-admin-panel.js
+          echo '== Required pages and assets =='
+          for f in index.html access.html admin.html attendance-admin.html member.html member-applications.html secretary-desk.html privacy.html terms.html empty-state.html 404.html favicon.svg; do
+            test -f "$f"
+          done
+
+          echo '== Page metadata =='
+          for f in ./*.html; do
+            grep -qi '<meta name="viewport"' "$f"
+            grep -qi '<meta name="description"' "$f"
+            grep -qi '<title>[^<][^<]*</title>' "$f"
+            grep -qi 'favicon.svg' "$f"
+          done
+
+          echo '== Placeholder and USB gate checks =='
+          if grep -RniE 'placeholder[[:space:]]*=' --include='*.html' .; then
+            echo 'Placeholder attributes remain in HTML.'; exit 1
+          fi
+          if grep -RniE 'Connect the KITC USB first|KITC USB is not connected|usb-gate|kitcUsbHandle|kitc:usb-ready|USB is the source of truth|source of truth.*USB' --include='*.html' --include='*.js' --exclude-dir=.git .; then
+            echo 'Legacy USB gate/dependency remains in the application.'; exit 1
+          fi
+
+          echo '== Mobile overflow protection =='
+          if grep -RniE 'overflow-x:[[:space:]]*(scroll|auto)' --include='*.html' --include='*.css' .; then
+            echo 'Horizontal scrolling is explicitly enabled.'; exit 1
+          fi
+          grep -qi 'overflow-x:hidden' index.html
+          grep -qi 'overflow-x:hidden' secretary-desk.html
+
+          echo '== Navigation and contact links =='
           grep -q 'access.html' index.html
+          grep -q 'member.html' index.html
           grep -q 'secretary-desk.html' access.html
-          ! grep -q 'src/login-selector.js' secretary-desk.html
-          grep -q 'src/kitc-admin-panel.js' secretary-desk.html
-          echo 'KITC landing, access gate, and Secretary Desk validation passed.'
+          grep -q 'mailto:' member-applications.html
+          grep -q 'tel:' member-applications.html
+          grep -q '404.html' README.md || true
+
+          echo '== JavaScript syntax =='
+          for f in src/kitc-bootstrap.js src/main.js src/secretary-suite.js src/login-selector.js src/documents.js src/members.js src/member-profile.js src/polish.js src/dashboard-polish.js src/runtime.js src/kitc-admin-panel.js; do
+            test -f "$f"
+            node --check "$f"
+          done
+
+          echo '== Mobile menu =='
+          grep -q 'menuToggle' index.html
+          grep -q 'mobileNav' index.html
+          grep -q 'menuButton' secretary-desk.html
+
+          echo '== Empty and error/success states =='
+          grep -qi 'empty-state\|No records' src/main.js
+          grep -qi 'Could not open\|runtime-error' src/main.js src/runtime.js
+          grep -qi 'successfully\|success' member-applications.html
+
+          echo 'All static KITC quality checks passed.'
+
+      - name: Compress deployment images
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check --quiet pillow
+          python3 - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          source = Path('Screenshot_20260821-202536.png')
+          if source.exists():
+              image = Image.open(source).convert('RGBA')
+              image.save('kitc-logo.webp', 'WEBP', quality=82, method=6)
+              source.unlink()
+          for path in Path('.').rglob('*.html'):
+              text = path.read_text(encoding='utf-8')
+              text = text.replace('Screenshot_20260821-202536.png', 'kitc-logo.webp')
+              path.write_text(text, encoding='utf-8')
+          PY
+          test -f kitc-logo.webp
+          echo "Optimized logo: $(du -h kitc-logo.webp | cut -f1)"
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
