@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const BUILD = '20260822-runtime-v1';
+  const BUILD = '20260912-runtime-v2';
   const content = document.getElementById('content');
   const app = document.getElementById('kitcApp');
   const toast = document.getElementById('toast');
@@ -19,14 +19,7 @@
     lastError = error;
     if (!content) return;
     const message = error?.message || String(error || 'Unknown KITC runtime error');
-    content.innerHTML = `
-      <div class="kitc-runtime-error">
-        <div class="eyebrow">KITC • RECOVERY</div>
-        <h1>KITC is recovering</h1>
-        <p>The management shell loaded, but one application module did not finish initializing.</p>
-        <div class="kitc-runtime-error-detail">${String(message).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]))}</div>
-        <button class="button primary" type="button" id="kitcRetryRender">Retry dashboard</button>
-      </div>`;
+    content.innerHTML = `<div class="kitc-runtime-error"><div class="eyebrow">KITC • RECOVERY</div><h1>KITC is recovering</h1><p>The management shell loaded, but one application module did not finish initializing.</p><div class="kitc-runtime-error-detail">${String(message).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]))}</div><button class="button primary" type="button" id="kitcRetryRender">Retry dashboard</button></div>`;
     document.getElementById('kitcRetryRender')?.addEventListener('click', () => ensureRendered(true));
   };
 
@@ -49,7 +42,7 @@
     }
   };
 
-  window.KITC_RUNTIME = { build: BUILD, ensureRendered, getLastError: () => lastError };
+  window.KITC_RUNTIME = { build: BUILD, ensureRendered, getLastError: () => lastError, showToast };
 
   window.addEventListener('error', event => {
     if (event?.error) console.error('[KITC uncaught]', event.error);
@@ -57,18 +50,6 @@
   window.addEventListener('unhandledrejection', event => {
     console.error('[KITC unhandled promise]', event.reason);
     if (app && !app.hasAttribute('hidden') && content && !content.textContent.trim()) showRuntimeError(event.reason);
-  });
-
-  window.addEventListener('kitc:unlocked', () => {
-    [0, 50, 200, 700, 1500].forEach(delay => setTimeout(() => ensureRendered(delay > 0), delay));
-  });
-
-  window.addEventListener('kitc:usb-ready', () => {
-    setTimeout(() => ensureRendered(true), 100);
-  });
-
-  window.addEventListener('kitc:secretary-suite-ready', () => {
-    setTimeout(() => ensureRendered(true), 0);
   });
 
   document.addEventListener('DOMContentLoaded', () => {
