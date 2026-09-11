@@ -1,5 +1,5 @@
 // Bootstrap shared KITC state before the application modules run.
-// USB remains the source of truth; these defaults only protect the in-memory state.
+// Storage is optional; the workspace can open with an empty state and load records when available.
 (() => {
   'use strict';
 
