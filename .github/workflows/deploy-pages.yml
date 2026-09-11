@@ -62,7 +62,34 @@ jobs:
           grep -q 'secretary-desk.html' access.html
           grep -q 'mailto:' member-applications.html
           grep -q 'tel:' member-applications.html
-          grep -q '404.html' README.md || true
+
+          echo '== Local link integrity =='
+          python3 - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          from urllib.parse import urlsplit
+          class Parser(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.refs=[]
+              def handle_starttag(self, tag, attrs):
+                  attrs=dict(attrs)
+                  for key in ('href','src'):
+                      value=attrs.get(key)
+                      if value: self.refs.append(value)
+          root=Path('.')
+          errors=[]
+          for page in root.glob('*.html'):
+              p=Parser(); p.feed(page.read_text(encoding='utf-8'))
+              for ref in p.refs:
+                  u=urlsplit(ref)
+                  if not ref or u.scheme in ('http','https','mailto','tel','javascript','data') or ref.startswith('#'):
+                      continue
+                  target=(page.parent/u.path).resolve()
+                  if not target.exists(): errors.append(f'{page}: {ref}')
+          if errors:
+              print('\n'.join(errors)); raise SystemExit('Broken local links found')
+          print('All local HTML links resolve.')
+          PY
 
           echo '== JavaScript syntax =='
           for f in src/kitc-bootstrap.js src/main.js src/secretary-suite.js src/login-selector.js src/documents.js src/members.js src/member-profile.js src/polish.js src/dashboard-polish.js src/runtime.js src/kitc-admin-panel.js; do
