@@ -13,10 +13,9 @@
     const menu = document.createElement('div');
     menu.id = 'kitcProfileMenu';
     menu.className = 'kitc-profile-menu';
-    const connected = Boolean(window.kitcUsbHandle);
     menu.innerHTML = `
       <div class="kitc-profile-heading"><span class="kitc-profile-avatar">A</span><div><strong>Anim</strong><small>Secretary • 2026–27</small></div></div>
-      <div class="kitc-profile-status"><span class="kitc-status-dot ${connected ? 'is-connected' : ''}"></span>${connected ? 'KITC USB connected' : 'KITC USB not connected'}</div>
+      <div class="kitc-profile-status"><span class="kitc-status-dot is-connected"></span> Workspace active</div>
       <button type="button" class="kitc-profile-close">Close</button>
     `;
     document.body.appendChild(menu);
@@ -44,7 +43,6 @@
       display.textContent = lowGlow ? '◑' : '◔';
     });
 
-    // main.js performs the actual toggle; this listener only keeps ARIA state in sync.
     menuButton?.addEventListener('click', () => {
       const open = sidebar?.classList.contains('open');
       menuButton.setAttribute('aria-expanded', String(Boolean(open)));
