@@ -35,7 +35,6 @@ jobs:
           test -f src/main.js
           test -f src/secretary-suite.js
           test -f src/login-selector.js
-          test -f src/usb-gate.js
           test -f src/documents.js
           test -f src/members.js
           test -f src/member-profile.js
@@ -47,7 +46,6 @@ jobs:
           node --check src/main.js
           node --check src/secretary-suite.js
           node --check src/login-selector.js
-          node --check src/usb-gate.js
           node --check src/documents.js
           node --check src/members.js
           node --check src/member-profile.js
